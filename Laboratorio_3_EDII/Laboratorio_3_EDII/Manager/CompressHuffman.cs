@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using EDII_PROYECTO.Huffman;
+using Laboratorio_3_EDII.Helper;
 using Laboratorio_3_EDII.IService;
 
 namespace Laboratorio_3_EDII.Manager
@@ -69,10 +71,107 @@ namespace Laboratorio_3_EDII.Manager
             }
         }
 
-
+        /// <summary>
+        /// Obtiene un archivo comprimido con extensión huff y devuelve el archivo original con extensión .txt
+        /// </summary>
+        /// <param name="ArchivoImportado"></param>
         public void DescompresionHuffman(FileStream ArchivoImportado)
         {
-            throw new NotImplementedException();
+            string nombreArchivo = Path.GetFileNameWithoutExtension(ArchivoImportado.Name);
+            nombreArchivo = nombreArchivo.Replace("IMPORTADO_", string.Empty);
+            using (FileStream archivo = new FileStream(Data.Instance.adress, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                Data.Instance.DirectorioHuff = archivo.Name;
+                int contador = 0;
+                int contadorCarac = 0;
+                int CantCaracteres = 0;
+                int CaracteresDif = 0;
+                string texto = string.Empty;
+                string acumula = "";
+                byte auxiliar = 0;
+                int bufferLength = 80;
+                var buffer = new byte[bufferLength];
+                string textoCifrado = string.Empty;
+                ArchivoImportado.Close();
+                using (var file = new FileStream(ArchivoImportado.Name, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(file))
+                    {
+                        while (reader.BaseStream.Position != reader.BaseStream.Length)
+                        {
+                            buffer = reader.ReadBytes(bufferLength);
+                            foreach (var item in buffer)
+                            {
+
+                                if (contador == ((CaracteresDif * 2) + 2) && contadorCarac < CantCaracteres)
+                                {
+                                    texto = Convert.ToString(item, 2);
+                                    if (texto.Length < 8)
+                                    {
+                                        texto = texto.PadLeft(8, '0');
+                                    }
+                                    acumula = acumula + texto;
+                                    int cont = 0;
+                                    int canteliminar = 0;
+                                    string validacion = "";
+                                    foreach (var item2 in acumula)
+                                    {
+                                        validacion = validacion + item2;
+                                        cont++;
+                                        if (Data.Instance.DicCarcacteres.ContainsKey(validacion))
+                                        {
+                                            archivo.WriteByte(Data.Instance.DicCarcacteres[validacion]);
+                                            acumula = acumula.Substring(cont);
+                                            cont = 0;
+                                            contadorCarac++;
+                                            canteliminar = cont;
+                                            validacion = "";
+                                        }
+                                    }
+                                }
+                                if (item != 44)
+                                {
+                                    byte[] byteCarac = { item };
+                                    texto = texto + Encoding.ASCII.GetString(byteCarac);
+                                }
+                                if (item == 44 && contador > 1 && contador < ((CaracteresDif * 2) + 2))
+                                {
+                                    if (item == 44 && contador % 2 == 0)
+                                    {
+                                        auxiliar = Convert.ToByte(texto, 2);
+                                        texto = string.Empty;
+                                        contador++;
+                                    }
+                                    else if (contador % 2 != 0 && item == 44)
+                                    {
+                                        Data.Instance.DicCarcacteres.Add(texto, auxiliar);
+                                        texto = string.Empty;
+                                        contador++;
+                                    }
+                                }
+                                else
+                                {
+                                    if (item == 44 && contador == 0)
+                                    {
+                                        CantCaracteres = int.Parse(texto);
+                                        texto = string.Empty;
+                                        contador++;
+                                    }
+                                    else if (item == 44 && contador == 1)
+                                    {
+                                        CaracteresDif = int.Parse(texto);
+                                        texto = string.Empty;
+                                        contador++;
+                                    }
+                                }
+                            }
+                        }
+                        reader.ReadBytes(bufferLength);
+                    }
+                }
+            };
+            Data.Instance.DicCarcacteres.Clear();
+
         }
     }
 }
