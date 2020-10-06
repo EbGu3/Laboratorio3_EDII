@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Laboratorio3_EDII.IHuffaman;
+using Laboratorio_3_EDII.Huffman;
+using Laboratorio_3_EDII.IService;
+using Laboratorio_3_EDII.Models;
 
-namespace Laboratorio3_EDII.Huffaman
+namespace Laboratorio_3_EDII.Manager
 {
     public class Arbol 
     {
@@ -15,15 +18,15 @@ namespace Laboratorio3_EDII.Huffaman
             Nodo Padre = new Nodo(0, derecho.Probabilidad + izquierdo.Probabilidad);
             Padre.Derecho = derecho;
             Padre.Izquierdo = izquierdo;
-            return Padre;    
+            return Padre;
         }
 
-        public Nodo ConstruirArbol(List<Nodo> ListaProbabilidades)
+        public Nodo ConstruirNodo(List<Nodo> ListaProbabilidades)
         {
             List<Nodo> LPrincipal = ListaProbabilidades;
             List<Nodo> LSecundaria = new List<Nodo>();
 
-            while(LPrincipal.Count > 2 )
+            while (LPrincipal.Count > 2)
             {
                 LSecundaria = LPrincipal;
                 Nodo nuevoNodo = NodoPadre(LSecundaria[0], LSecundaria[1]);
@@ -55,5 +58,6 @@ namespace Laboratorio3_EDII.Huffaman
                 ListaCodigos.Add(nuevoCaracter);
             }
         }
+
     }
 }

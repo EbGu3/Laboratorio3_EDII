@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Laboratorio3_EDII.Huffaman
+namespace Laboratorio_3_EDII.Huffman
 {
     public class CodigoCaracter
     {

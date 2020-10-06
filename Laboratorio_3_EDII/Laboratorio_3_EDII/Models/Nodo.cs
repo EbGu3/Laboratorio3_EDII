@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Laboratorio3_EDII.Huffaman
+namespace Laboratorio_3_EDII.Models
 {
     public class Nodo
     {
@@ -9,7 +9,7 @@ namespace Laboratorio3_EDII.Huffaman
         public Nodo Izquierdo { get; set; }
         public Nodo Derecho { get; set; }
 
-        public Nodo(byte caracter, double probabilidad)
+        public Nodo(byte caracter = 0, double probabilidad = 0)
         {
             Caracter = caracter;
             Probabilidad = probabilidad;
