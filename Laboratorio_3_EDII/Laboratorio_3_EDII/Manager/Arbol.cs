@@ -13,6 +13,12 @@ namespace Laboratorio_3_EDII.Manager
         public Nodo Raiz { get; set; }
         public List<CodigoCaracter> ListaCodigos { get; set; }
 
+        /// <summary>
+        /// Crea el nodo para ser usado
+        /// </summary>
+        /// <param name="derecho"></param>
+        /// <param name="izquierdo"></param>
+        /// <returns></returns>
         public Nodo NodoPadre(Nodo derecho, Nodo izquierdo)
         {
             Nodo Padre = new Nodo(0, derecho.Probabilidad + izquierdo.Probabilidad);
@@ -21,6 +27,11 @@ namespace Laboratorio_3_EDII.Manager
             return Padre;
         }
 
+        /// <summary>
+        /// Distribuye los valores dentro de un nodo
+        /// </summary>
+        /// <param name="ListaProbabilidades"></param>
+        /// <returns></returns>
         public Nodo ConstruirNodo(List<Nodo> ListaProbabilidades)
         {
             List<Nodo> LPrincipal = ListaProbabilidades;
@@ -34,10 +45,13 @@ namespace Laboratorio_3_EDII.Manager
                 LSecundaria.Add(nuevoNodo);
                 LPrincipal = LSecundaria.OrderBy(o => o.Probabilidad).ToList();
             }
-
             return Raiz = NodoPadre(LPrincipal[0], LPrincipal[1]);
         }
 
+        /// <summary>
+        /// Realiza la asignación de cógidos prefijos
+        /// </summary>
+        /// <param name="Raiz"></param>
         public void EtiquetarNodo(Nodo Raiz)
         {
             string Etiquette = Raiz.Etiqueta;
@@ -58,6 +72,5 @@ namespace Laboratorio_3_EDII.Manager
                 ListaCodigos.Add(nuevoCaracter);
             }
         }
-
     }
 }

@@ -74,10 +74,10 @@ namespace Laboratorio_3_EDII.Manager
         /// <summary>
         /// Obtiene un archivo comprimido con extensión huff y devuelve el archivo original con extensión .txt
         /// </summary>
-        /// <param name="ArchivoImportado"></param>
-        public void DescompresionHuffman(FileStream ArchivoImportado)
+        /// <param name="Importado"></param>
+        public void DescompresionHuffman(FileStream Importado)
         {
-            string nombreArchivo = Path.GetFileNameWithoutExtension(ArchivoImportado.Name);
+            string nombreArchivo = Path.GetFileNameWithoutExtension(Importado.Name);
             nombreArchivo = nombreArchivo.Replace("IMPORTADO_", string.Empty);
             using (FileStream archivo = new FileStream(Data.Instance.adress, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -92,8 +92,8 @@ namespace Laboratorio_3_EDII.Manager
                 int bufferLength = 80;
                 var buffer = new byte[bufferLength];
                 string textoCifrado = string.Empty;
-                ArchivoImportado.Close();
-                using (var file = new FileStream(ArchivoImportado.Name, FileMode.Open))
+                Importado.Close();
+                using (var file = new FileStream(Importado.Name, FileMode.Open))
                 {
                     using (var reader = new BinaryReader(file))
                     {
@@ -171,7 +171,6 @@ namespace Laboratorio_3_EDII.Manager
                 }
             };
             Data.Instance.DicCarcacteres.Clear();
-
         }
     }
 }

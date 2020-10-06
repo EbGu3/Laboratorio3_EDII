@@ -75,8 +75,5 @@ namespace Laboratorio_3_EDII.Manager
 
             //Agregar Instancia a la API
         }
-
-       
-
     }
 }
