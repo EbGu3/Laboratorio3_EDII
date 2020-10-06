@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
+using Laboratorio3_EDII.IHuffaman;
 
 namespace Laboratorio3_EDII.Huffaman
 {
-    public class Arbol
+    public class Arbol 
     {
         public Nodo Raiz { get; set; }
         public List<CodigoCaracter> ListaCodigos { get; set; }

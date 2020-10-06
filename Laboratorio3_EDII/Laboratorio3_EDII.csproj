@@ -45,6 +45,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Huffaman\" />
+    <Folder Include="IHuffaman\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyClass.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Huffaman\Nodo.cs" />
     <Compile Include="Huffaman\Arbol.cs" />
     <Compile Include="Huffaman\CodigoCaracter.cs" />
+    <Compile Include="IHuffaman\IHuffman.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\TVOS\Xamarin.TVOS.CSharp.targets" />
 </Project>
