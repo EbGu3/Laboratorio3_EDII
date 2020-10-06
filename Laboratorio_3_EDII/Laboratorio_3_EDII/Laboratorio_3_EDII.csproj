@@ -7,6 +7,5 @@
   <ItemGroup>
     <Folder Include="IService\" />
     <Folder Include="Models\" />
-    <Folder Include="Manager\" />
   </ItemGroup>
 </Project>
