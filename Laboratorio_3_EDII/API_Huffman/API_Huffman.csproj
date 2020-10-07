@@ -4,5 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj" />
+  </ItemGroup>
+
 
 </Project>
