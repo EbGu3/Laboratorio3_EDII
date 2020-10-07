@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace API_Huffman
 {
@@ -25,6 +28,12 @@ namespace API_Huffman
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("EDv1", new OpenApiInfo { Title = "Estructura de Datos II", Version = "EDv1", Description = "Compresión Huffman" }
+                );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +43,13 @@ namespace API_Huffman
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("./swagger/EDv1/swagger.json", "Compresión Huffman - Estructura de Datos II");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
