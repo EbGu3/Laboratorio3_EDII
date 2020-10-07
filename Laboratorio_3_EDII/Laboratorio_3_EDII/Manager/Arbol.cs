@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Laboratorio_3_EDII.Huffman;
 using Laboratorio_3_EDII.IService;
 
 namespace Laboratorio_3_EDII.Manager
 {
     public class Arbol 
     {
-        public Nodo Raiz { get; set; }
-        public List<CodigoCaracter> ListaCodigos { get; set; }
+        public Node Raiz { get; set; }
+        public List<CaracterCodigo> ListaCodigos { get; set; }
 
         /// <summary>
         /// Crea el nodo para ser usado
@@ -18,11 +17,11 @@ namespace Laboratorio_3_EDII.Manager
         /// <param name="derecho"></param>
         /// <param name="izquierdo"></param>
         /// <returns></returns>
-        public Nodo NodoPadre(Nodo derecho, Nodo izquierdo)
+        public Node NodoPadre(Node derecho, Node izquierdo)
         {
-            Nodo Padre = new Nodo(0, derecho.Probabilidad + izquierdo.Probabilidad);
-            Padre.Derecho = derecho;
-            Padre.Izquierdo = izquierdo;
+            Node Padre = new Node(0, derecho.letra_Probabilidad + izquierdo.letra_Probabilidad);
+            Padre.derecho = derecho;
+            Padre.izquierdo = izquierdo;
             return Padre;
         }
 
@@ -31,18 +30,18 @@ namespace Laboratorio_3_EDII.Manager
         /// </summary>
         /// <param name="ListaProbabilidades"></param>
         /// <returns></returns>
-        public Nodo ConstruirNodo(List<Nodo> ListaProbabilidades)
+        public Node ConstruirNodo(List<Node> ListaProbabilidades)
         {
-            List<Nodo> LPrincipal = ListaProbabilidades;
-            List<Nodo> LSecundaria = new List<Nodo>();
+            List<Node> LPrincipal = ListaProbabilidades;
+            List<Node> LSecundaria = new List<Node>();
 
             while (LPrincipal.Count > 2)
             {
                 LSecundaria = LPrincipal;
-                Nodo nuevoNodo = NodoPadre(LSecundaria[0], LSecundaria[1]);
+                Node nuevoNodo = NodoPadre(LSecundaria[0], LSecundaria[1]);
                 LSecundaria.RemoveRange(0, 2);
                 LSecundaria.Add(nuevoNodo);
-                LPrincipal = LSecundaria.OrderBy(o => o.Probabilidad).ToList();
+                LPrincipal = LSecundaria.OrderBy(o => o.letra_Probabilidad).ToList();
             }
             return Raiz = NodoPadre(LPrincipal[0], LPrincipal[1]);
         }
@@ -51,41 +50,41 @@ namespace Laboratorio_3_EDII.Manager
         /// Realiza la asignación de cógidos prefijos
         /// </summary>
         /// <param name="Raiz"></param>
-        public void EtiquetarNodo(Nodo Raiz)
+        public void EtiquetarNodo(Node Raiz)
         {
-            string Etiquette = Raiz.Etiqueta;
-            if (Raiz.Izquierdo != null)
+            string Etiquette = Raiz.etiqueta;
+            if (Raiz.izquierdo != null)
             {
-                Raiz.Izquierdo.Etiqueta = Etiquette + "0";
-                EtiquetarNodo(Raiz.Izquierdo);
+                Raiz.izquierdo.etiqueta = Etiquette + "0";
+                EtiquetarNodo(Raiz.izquierdo);
             }
-            if (Raiz.Derecho != null)
+            if (Raiz.derecho != null)
             {
                 //Ó un 1 cuando es hijo derecho
-                Raiz.Derecho.Etiqueta = Etiquette + "1";
-                EtiquetarNodo(Raiz.Derecho);
+                Raiz.derecho.etiqueta = Etiquette + "1";
+                EtiquetarNodo(Raiz.derecho);
             }
-            if (Raiz.Derecho == null && Raiz.Izquierdo == null)
+            if (Raiz.derecho == null && Raiz.izquierdo == null)
             {
-                CodigoCaracter nuevoCaracter = new CodigoCaracter(Raiz.Caracter, Raiz.Etiqueta);
+                CaracterCodigo nuevoCaracter = new CaracterCodigo(Raiz.letra, Raiz.etiqueta);
                 ListaCodigos.Add(nuevoCaracter);
             }
         }
-        public class Nodo
+        public class Node
         {
             public string etiqueta = "";
-            public double probabilidad;
-            public byte caracter;
-            public Nodo izquierdo;
-            public Nodo derecho;
-            public Nodo()
+            public double letra_Probabilidad;
+            public byte letra;
+            public Node izquierdo;
+            public Node derecho;
+            public Node()
             {
 
             }
-            public Nodo(byte car, double prob)
+            public Node(byte car, double prob)
             {
-                probabilidad = prob;
-                caracter = car;
+                letra_Probabilidad = prob;
+                letra = car;
             }
         }
         public class CaracterCodigo

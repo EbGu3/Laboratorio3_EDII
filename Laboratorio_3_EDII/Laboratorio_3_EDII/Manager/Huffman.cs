@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using Laboratorio_3_EDII.Models;
 using Laboratorio_3_EDII.IService;
 using System.Linq;
+using Laboratorio_3_EDII.Helper;
+using System.Text;
+using static Laboratorio_3_EDII.Manager.Arbol;
 
 namespace Laboratorio_3_EDII.Manager
 {
     public class Huffman : IHuffman
     {
-        List<Nodo> Frecuencias = new List<Nodo>();
+        List<Node> Frecuencias = new List<Node>();
 
         public int Leer(string Direccion)
         {
@@ -41,33 +44,33 @@ namespace Laboratorio_3_EDII.Manager
         public void ConteoDeFrecuncia(byte Elemento)
         {
             int posicionLista;
-            if(Frecuencias.Exists(x => x.Caracter == Elemento))
+            if(Frecuencias.Exists(x => x.letra == Elemento))
             {
-                posicionLista = Frecuencias.FindIndex(x => x.Caracter == Elemento);
+                posicionLista = Frecuencias.FindIndex(x => x.letra == Elemento);
 
-                Nodo Prueba = new Nodo();
-                Prueba = Frecuencias.Find(x => x.Caracter == Elemento);
+                Node Prueba = new Node();
+                Prueba = Frecuencias.Find(x => x.letra == Elemento);
                 Frecuencias.RemoveAt(posicionLista);
-                Frecuencias.Add(new Nodo()
+                Frecuencias.Add(new Node()
                 {
-                    Caracter = Elemento,
-                    Probabilidad = Prueba.Probabilidad + 1
+                    letra = Elemento,
+                    letra_Probabilidad = Prueba.letra_Probabilidad + 1
                 });
             }
             else
             {
-                Frecuencias.Add(new Nodo()
+                Frecuencias.Add(new Node()
                 {
-                    Caracter = Elemento,
-                    Probabilidad = 1
+                    letra = Elemento,
+                    letra_Probabilidad = 1
                 });
             }
         }
 
         public void CrearArbol()
         {
-            List<Nodo> FrecuenciaOrden = new List<Nodo>();
-            FrecuenciaOrden = FrecuenciaOrden.OrderBy(x => x.Probabilidad).ToList();
+            List<Node> FrecuenciaOrden = new List<Node>();
+            FrecuenciaOrden = FrecuenciaOrden.OrderBy(x => x.letra_Probabilidad).ToList();
 
             Arbol ArbolH = new Arbol();
 

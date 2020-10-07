@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static Laboratorio_3_EDII.Manager.Arbol;
 
 namespace Laboratorio_3_EDII.Helper
 {
@@ -16,11 +17,9 @@ namespace Laboratorio_3_EDII.Helper
             }
         }
         public int value;
-        //public List<CaracterCodigo> ListaCod = new List<CaracterCodigo>();
+        public List<CaracterCodigo> ListaCod = new List<CaracterCodigo>();
         public Dictionary<string, byte> DicCarcacteres = new Dictionary<string, byte>();
         public string DirectorioHuff;
-        //public List<tipo> ClavesParaLlave = new List<tipo>();
-        //public List<tipo> DatosGenerados = new List<tipo>();
         public int grade;
         public Delegate getNode;
         public Delegate getText;

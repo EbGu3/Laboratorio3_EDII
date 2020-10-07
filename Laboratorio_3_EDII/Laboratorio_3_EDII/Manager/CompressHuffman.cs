@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using EDII_PROYECTO.Huffman;
 using Laboratorio_3_EDII.Helper;
