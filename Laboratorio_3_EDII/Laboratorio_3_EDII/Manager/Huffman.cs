@@ -75,5 +75,18 @@ namespace Laboratorio_3_EDII.Manager
 
             //Agregar Instancia a la API
         }
+        public byte[] CrearEncabezado(int noCaracteres)
+        {
+            double noElementos = Data.Instance.ListaCod.LongCount();
+            string codigo = noCaracteres + "," + noElementos;
+            foreach (var cosa in Data.Instance.ListaCod)
+            {
+                string p = Convert.ToString(cosa.caracter, 2);
+                codigo = codigo + "," + p;
+                codigo = codigo + "," + cosa.codigo;
+            }
+            byte[] encabezadoBytes = Encoding.ASCII.GetBytes(codigo + ",");
+            return encabezadoBytes;
+        }
     }
 }

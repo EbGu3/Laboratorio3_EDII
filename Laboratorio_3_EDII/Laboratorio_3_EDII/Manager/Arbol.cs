@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Laboratorio_3_EDII.Huffman;
 using Laboratorio_3_EDII.IService;
-using Laboratorio_3_EDII.Models;
 
 namespace Laboratorio_3_EDII.Manager
 {
@@ -70,6 +69,38 @@ namespace Laboratorio_3_EDII.Manager
             {
                 CodigoCaracter nuevoCaracter = new CodigoCaracter(Raiz.Caracter, Raiz.Etiqueta);
                 ListaCodigos.Add(nuevoCaracter);
+            }
+        }
+        public class Nodo
+        {
+            public string etiqueta = "";
+            public double probabilidad;
+            public byte caracter;
+            public Nodo izquierdo;
+            public Nodo derecho;
+            public Nodo()
+            {
+
+            }
+            public Nodo(byte car, double prob)
+            {
+                probabilidad = prob;
+                caracter = car;
+            }
+        }
+        public class CaracterCodigo
+        {
+            public string codigo;
+            public byte caracter;
+
+            public CaracterCodigo()
+            {
+
+            }
+            public CaracterCodigo(byte car, string cod)
+            {
+                caracter = car;
+                codigo = cod;
             }
         }
     }
