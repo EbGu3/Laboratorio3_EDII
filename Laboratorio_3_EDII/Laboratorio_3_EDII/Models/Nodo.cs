@@ -1,21 +1,28 @@
-﻿using System;
+﻿using Laboratorio_3_EDII.Helper;
+using System;
+using System.Collections.Generic;
+
 namespace Laboratorio_3_EDII.Models
 {
-    public class Nodo
+    public class Nodo<T>
     {
-        public string Etiqueta { get; set; }
-        public double Probabilidad { get; set; }
-        public byte Caracter { get; set; }
-        public Nodo Izquierdo { get; set; }
-        public Nodo Derecho { get; set; }
-
-        public Nodo(byte caracter = 0, double probabilidad = 0)
+        public int index;
+        public int father;
+        public int numberValues;
+        public List<int> children = new List<int>();
+        public List<T> values = new List<T>();
+        static int lenght = 300;
+        public Nodo(int dad)
         {
-            Caracter = caracter;
-            Probabilidad = probabilidad;
-            Etiqueta = "";
-            Izquierdo = null;
-            Derecho = null;
+            if (dad == 0)
+            {
+                numberValues = (4 * (Data.Instance.grade - 1)) / 3;
+            }
+            else
+            {
+                numberValues = Data.Instance.grade - 1;
+            }
+            this.father = dad;
         }
     }
 }
