@@ -21,12 +21,12 @@ namespace API_Huffman.Controllers
         /// <response code="400">Archivo ingresado no es de extensión .txt</response>
         /// <response code="500">Archivo corrupto o no válido</response>
         /// <returns></returns>
-        [HttpPost, Route("{name}")]
-        public ActionResult Post_File_Import(IFormFile name)
+        [HttpPost, Route("{name?}")]
+        public ActionResult Post_File_Import(IFormFile file, string name)
         {
             try
             {
-                var extension = Path.GetExtension(name.FileName);
+                var extension = Path.GetExtension(file.FileName);
                 if (extension != ".txt")
                 {
                     return BadRequest("El archivo enviado no es de extensión .txt");
