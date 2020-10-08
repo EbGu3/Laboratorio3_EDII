@@ -21,11 +21,11 @@ namespace Laboratorio_3_EDII.Manager
             var Buffer = new byte[BufferLength];
             var File = Direccion;
 
-            using(var Lectura  = new FileStream(Direccion, FileMode.Open))
+            using (var Lectura = new FileStream(Direccion, FileMode.Open))
             {
-                using(var Reader = new BinaryReader(Lectura))
+                using (var Reader = new BinaryReader(Lectura))
                 {
-                    while(Reader.BaseStream.Position != Reader.BaseStream.Length)
+                    while (Reader.BaseStream.Position != Reader.BaseStream.Length)
                     {
                         Buffer = Reader.ReadBytes(BufferLength);
 
@@ -41,10 +41,23 @@ namespace Laboratorio_3_EDII.Manager
             return NoCaracteres;
         }
 
+        //Prueba
+        public int LeerCadena(string Cadena)
+        {
+            var NoCaracter = 0;
+            for (int i = 0; i < Cadena.Length; i++)
+            {
+                NoCaracter++;
+                ConteoDeFrecuncia(Convert.ToByte(Cadena[i]));
+            }
+            return NoCaracter;
+        }
+
+
         public void ConteoDeFrecuncia(byte Elemento)
         {
             int posicionLista;
-            if(Frecuencias.Exists(x => x.letra == Elemento))
+            if (Frecuencias.Exists(x => x.letra == Elemento))
             {
                 posicionLista = Frecuencias.FindIndex(x => x.letra == Elemento);
 
@@ -66,11 +79,10 @@ namespace Laboratorio_3_EDII.Manager
                 });
             }
         }
-
         public void CrearArbol()
         {
             List<Node> FrecuenciaOrden = new List<Node>();
-            FrecuenciaOrden = FrecuenciaOrden.OrderBy(x => x.letra_Probabilidad).ToList();
+            FrecuenciaOrden = Frecuencias.OrderBy(x => x.letra_Probabilidad).ToList();
 
             Arbol ArbolH = new Arbol();
 
@@ -78,6 +90,7 @@ namespace Laboratorio_3_EDII.Manager
 
             //Agregar Instancia a la API
         }
+
         public byte[] CrearEncabezado(int noCaracteres)
         {
             double noElementos = Data.Instance.ListaCod.LongCount();
@@ -90,6 +103,17 @@ namespace Laboratorio_3_EDII.Manager
             }
             byte[] encabezadoBytes = Encoding.ASCII.GetBytes(codigo + ",");
             return encabezadoBytes;
+        }
+
+        public List<CaracterCodigo> CrearTree()
+        {
+            List<Node> FrecuenciaOrden = new List<Node>();
+            FrecuenciaOrden = Frecuencias.OrderBy(x => x.letra_Probabilidad).ToList();
+
+            Arbol ArbolH = new Arbol();
+
+            ArbolH.EtiquetarNodo(ArbolH.ConstruirNodo(FrecuenciaOrden));
+            return ArbolH.ListaCodigos;
         }
     }
 }

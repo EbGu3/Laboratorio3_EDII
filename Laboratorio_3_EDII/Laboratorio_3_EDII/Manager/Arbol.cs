@@ -6,10 +6,10 @@ using Laboratorio_3_EDII.IService;
 
 namespace Laboratorio_3_EDII.Manager
 {
-    public class Arbol 
+    public class Arbol
     {
         public Node Raiz { get; set; }
-        public List<CaracterCodigo> ListaCodigos { get; set; }
+        public List<CaracterCodigo> ListaCodigos = new List<CaracterCodigo>();
 
         /// <summary>
         /// Crea el nodo para ser usado
@@ -70,6 +70,7 @@ namespace Laboratorio_3_EDII.Manager
                 ListaCodigos.Add(nuevoCaracter);
             }
         }
+
         public class Node
         {
             public string etiqueta = "";

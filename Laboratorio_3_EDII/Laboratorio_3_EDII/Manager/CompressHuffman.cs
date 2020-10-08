@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using EDII_PROYECTO.Huffman;
 using Laboratorio_3_EDII.Helper;
@@ -172,6 +173,31 @@ namespace Laboratorio_3_EDII.Manager
                 }
             };
             Data.Instance.DicCarcacteres.Clear();
+        }
+
+        public void CompressionHuffman(string Cadena)
+        {
+
+            string TextoCifrado = string.Empty;
+            var CantidadCaracteres = 0;
+            var Huffman = new Huffman();
+            CantidadCaracteres = Huffman.LeerCadena(Cadena);
+            var ListadoCodigos = Huffman.CrearTree();
+
+            for (int i = 0; i < Cadena.Length; i++)
+            {
+                foreach (var caracterList in ListadoCodigos)
+                {
+                    byte caracter = Convert.ToByte(Cadena[i]);
+                    if (caracter == caracterList.caracter)
+                    {
+                        TextoCifrado += caracterList.codigo;
+                    }
+                }
+
+            }
+            Console.WriteLine(TextoCifrado);
+
         }
     }
 }
