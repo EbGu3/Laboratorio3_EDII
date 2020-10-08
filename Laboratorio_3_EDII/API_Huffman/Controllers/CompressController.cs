@@ -24,14 +24,23 @@ namespace API_Huffman.Controllers
         [HttpPost, Route("{name?}")]
         public ActionResult Post_File_Import(IFormFile file, string name)
         {
+            if (!Directory.Exists($"Upload"))
+            {
+                Directory.CreateDirectory($"Upload");
+            }
+            if (!Directory.Exists($"Compress"))
+            {
+                Directory.CreateDirectory($"Compress");
+            }
+            //Comprobar directorios
             try
             {
                 var extension = Path.GetExtension(file.FileName);
-                if (extension != ".txt")
+                if (extension == ".txt")
                 {
-                    return BadRequest("El archivo enviado no es de extensión .txt");
+                    return Ok("El archivo ha sido comprimido exitosamente!");
                 }
-                return Ok("El archivo ha sido comprimido exitosamente!");
+                return BadRequest("El archivo enviado no es de extensión .txt");
             }
             catch (Exception e)
             {

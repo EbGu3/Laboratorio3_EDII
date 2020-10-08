@@ -23,14 +23,23 @@ namespace API_Huffman.Controllers
         [HttpPost]
         public IActionResult Post_File_Export(IFormFile archivo)
         {
+            if (!Directory.Exists($"Upload"))
+            {
+                Directory.CreateDirectory($"Upload");
+            }
+            if (!Directory.Exists($"Decompress"))
+            {
+                Directory.CreateDirectory($"Decompress");
+            }
+            //Comprobar directorios
             try
             {
                 var extension = Path.GetExtension(archivo.FileName);
-                if (extension != ".huff")
+                if (extension == ".huff")
                 {
-                    return BadRequest("El archivo enviado no es de extensión .huff");
+                    return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
-                return Ok("El archivo ha sido descomprimido exitosamente!");
+                return BadRequest("El archivo enviado no es de extensión .huff");
             }
             catch (Exception e)
             {
