@@ -9,15 +9,19 @@ using System.IO;
 
 namespace API_Huffman.Controllers
 {
+    /// <summary>
+    /// Compresión de archivos de texto
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CompressController : ControllerBase
     {
         /// <summary>
-        /// Obtiene un archivo de texto y devuelve {nombre}.huff
+        /// Importación del archivo para comprimir
         /// </summary>
         /// <param name="file"></param>
-        /// <response code="200">Archivo no comprimido exitosamente</response>
+        /// <param name="name"></param>
+        /// <response code="200">Archivo comprimido exitosamente</response>
         /// <response code="400">Archivo ingresado no es de extensión .txt</response>
         /// <response code="500">Archivo corrupto o no válido</response>
         /// <returns></returns>

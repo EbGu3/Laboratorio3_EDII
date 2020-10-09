@@ -12,5 +12,9 @@
     <ProjectReference Include="..\Laboratorio_3_EDII\Laboratorio_3_EDII.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarm>$(NoWarm);1591</NoWarm>
+  </PropertyGroup>
 
 </Project>

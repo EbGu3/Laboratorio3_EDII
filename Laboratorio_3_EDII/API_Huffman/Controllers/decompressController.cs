@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Huffman.Controllers
 {
+    /// <summary>
+    /// Descompresión de archivos huffman
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class decompressController : ControllerBase
@@ -15,8 +18,8 @@ namespace API_Huffman.Controllers
         /// <summary>
         /// Recibe un archivo .huff y devuelve el archivo original de texto
         /// </summary>
-        /// <param name="file"></param>
-        /// <response code="200">Archivo no descomprimido exitosamente</response>
+        /// <param name="archivo"></param>
+        /// <response code="200">Archivo descomprimido exitosamente</response>
         /// <response code="400">Archivo ingresado no es de extensión .huff</response>
         /// <response code="500">Archivo corrupto o no válido</response>
         /// <returns></returns>
