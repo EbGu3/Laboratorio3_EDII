@@ -81,7 +81,7 @@ namespace Laboratorio_3_EDII.Manager
         public void Decompress_File(FileStream Importado)
         {
             string nombreArchivo = Path.GetFileNameWithoutExtension(Importado.Name);
-            var full_path = $"Decompress\\";
+            var full_path = $"Decompress\\" + nombreArchivo + ".txt";
             using (FileStream archivo = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 int contador = 0;

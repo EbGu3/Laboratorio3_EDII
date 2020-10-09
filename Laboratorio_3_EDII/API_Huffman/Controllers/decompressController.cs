@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Laboratorio_3_EDII.Helper;
+using Laboratorio_3_EDII.Manager;
 
 namespace API_Huffman.Controllers
 {
@@ -41,9 +42,17 @@ namespace API_Huffman.Controllers
             {
                 if (Path.GetExtension(file.FileName) == ".huff")
                 {
+                    var new_Path = string.Empty;
                     using (var this_file = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(this_file);
+                        new_Path = Path.GetFullPath(this_file.Name);
+                    }
+
+                    using (var new_File = new FileStream(new_Path, FileMode.Open))
+                    {
+                        CompressHuffman Huffman = new CompressHuffman();
+                        Huffman.Decompress_File(new_File);
                     }
                     return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
