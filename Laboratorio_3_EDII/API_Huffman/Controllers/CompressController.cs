@@ -26,7 +26,7 @@ namespace API_Huffman.Controllers
         /// <response code="500">Archivo corrupto o no válido</response>
         /// <returns></returns>
         [HttpPost, Route("{name?}")]
-        public ActionResult Post_File_Import(IFormFile file, string name)
+        public async Task<ActionResult> Post_File_Import(IFormFile file, string name)
         {
             if (!Directory.Exists($"Upload"))
             {
@@ -36,12 +36,16 @@ namespace API_Huffman.Controllers
             {
                 Directory.CreateDirectory($"Compress");
             }
+            var path = Path.Combine($"Upload", file.FileName);
             //Comprobar directorios
             try
             {
-                var extension = Path.GetExtension(file.FileName);
-                if (extension == ".txt")
+                if (Path.GetExtension(file.FileName) == ".txt")
                 {
+                    using (var this_file = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(this_file);
+                    }
                     return Ok("El archivo ha sido comprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .txt");

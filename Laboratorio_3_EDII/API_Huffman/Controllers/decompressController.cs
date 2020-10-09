@@ -18,13 +18,13 @@ namespace API_Huffman.Controllers
         /// <summary>
         /// Recibe un archivo .huff y devuelve el archivo original de texto
         /// </summary>
-        /// <param name="archivo"></param>
+        /// <param name="file"></param>
         /// <response code="200">Archivo descomprimido exitosamente</response>
         /// <response code="400">Archivo ingresado no es de extensión .huff</response>
         /// <response code="500">Archivo corrupto o no válido</response>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post_File_Export(IFormFile archivo)
+        public async Task<IActionResult> Post_File_Export(IFormFile file)
         {
             if (!Directory.Exists($"Upload"))
             {
@@ -34,12 +34,16 @@ namespace API_Huffman.Controllers
             {
                 Directory.CreateDirectory($"Decompress");
             }
+            var path = Path.Combine($"Upload", file.FileName);
             //Comprobar directorios
             try
             {
-                var extension = Path.GetExtension(archivo.FileName);
-                if (extension == ".huff")
+                if (Path.GetExtension(file.FileName) == ".huff")
                 {
+                    using (var this_file = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(this_file);
+                    }
                     return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .huff");
