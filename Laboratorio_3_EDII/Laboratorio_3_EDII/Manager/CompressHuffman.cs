@@ -14,23 +14,22 @@ namespace Laboratorio_3_EDII.Manager
         /// <summary>
         /// Obtiene un archivo de texto para devolver un archivo comprimido con extensión .huff
         /// </summary>
-        /// <param name="exportado"></param>
+        /// <param name="fileToCompress"></param>
         /// <param name="name"></param>
-        public void Compress_File(FileStream exportado, string name)
+        public void Compress_File(FileStream fileToCompress, string name)
         {
-            string nombreArchivo = Path.GetFileNameWithoutExtension(exportado.Name);
             var huffman = new Huffman();
             var PropiedadesArchivoActual = new Files();
-            PropiedadesArchivoActual.TamanoArchivoDescomprimido = exportado.Length;
-            PropiedadesArchivoActual.NombreArchivoOriginal = exportado.Name;
-            exportado.Close();
-            var direccion = Path.GetFullPath(exportado.Name);
+            PropiedadesArchivoActual.TamanoArchivoDescomprimido = fileToCompress.Length;
+            var full_path = $"Compress\\" + name + ".huff";
+            fileToCompress.Close();
+            var direccion = Path.GetFullPath(fileToCompress.Name);
             int cantidadCaracteres = huffman.Leer(direccion);
             huffman.CrearArbol();
             byte[] encabezado = huffman.CrearEncabezado(cantidadCaracteres);
-            var full_path = $"Compress\\" + name + ".huff";
             using (FileStream ArchivoComprimir = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
+                PropiedadesArchivoActual.NombreArchivoOriginal = Path.GetFullPath(ArchivoComprimir.Name);
                 foreach (var item in encabezado)
                 {
                     ArchivoComprimir.WriteByte(item);
@@ -38,7 +37,7 @@ namespace Laboratorio_3_EDII.Manager
                 int bufferLength = 80;
                 var buffer = new byte[bufferLength];
                 string textoCifrado = string.Empty;
-                using (var file = new FileStream(exportado.Name, FileMode.Open))
+                using (var file = new FileStream(fileToCompress.Name, FileMode.Open))
                 {
                     using (var reader = new BinaryReader(file))
                     {
@@ -60,6 +59,12 @@ namespace Laboratorio_3_EDII.Manager
                             }
                         }
                         reader.ReadBytes(bufferLength);
+                        PropiedadesArchivoActual.TamanoArchivoComprimido = ArchivoComprimir.Length;
+                        PropiedadesArchivoActual.RazonCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido);
+                        PropiedadesArchivoActual.FactorCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido);
+                        PropiedadesArchivoActual.PorcentajeReduccion = (Convert.ToDouble(1) - PropiedadesArchivoActual.RazonCompresion).ToString();
+                        Data.Instance.PilaArchivosComprimidos.Add(PropiedadesArchivoActual);
+                        Compressed(Data.Instance.PilaArchivosComprimidos, Path.GetFileNameWithoutExtension(fileToCompress.Name));
                     }
                 }
                 if (textoCifrado.Length > 0 && (textoCifrado.Length % 8) == 0)
@@ -77,10 +82,10 @@ namespace Laboratorio_3_EDII.Manager
         /// <summary>
         /// Obtiene un archivo comprimido con extensión huff y devuelve el archivo original con extensión .txt
         /// </summary>
-        /// <param name="Importado"></param>
-        public void Decompress_File(FileStream Importado)
+        /// <param name="fileToDecompress"></param>
+        public void Decompress_File(FileStream fileToDecompress)
         {
-            string nombreArchivo = Path.GetFileNameWithoutExtension(Importado.Name);
+            string nombreArchivo = Path.GetFileNameWithoutExtension(fileToDecompress.Name);
             var full_path = $"Decompress\\" + nombreArchivo + ".txt";
             using (FileStream archivo = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -94,8 +99,8 @@ namespace Laboratorio_3_EDII.Manager
                 int bufferLength = 80;
                 var buffer = new byte[bufferLength];
                 string textoCifrado = string.Empty;
-                Importado.Close();
-                using (var file = new FileStream(Importado.Name, FileMode.Open))
+                fileToDecompress.Close();
+                using (var file = new FileStream(fileToDecompress.Name, FileMode.Open))
                 {
                     using (var reader = new BinaryReader(file))
                     {
@@ -194,6 +199,21 @@ namespace Laboratorio_3_EDII.Manager
                 }
             }
             Console.WriteLine(TextoCifrado);
+        }
+        public void Compressed(List<Files> List_file, string name)
+        {
+            var full_path = $"Compress\\Propiedades_" + name + ".txt";
+            using (TextWriter writer = new StreamWriter(full_path))
+            {
+                foreach (var item in List_file)
+                {
+                    writer.WriteLine("Nombre Archivo Original: " + name);
+                    writer.WriteLine("Nombre y ruta del archivo comprimido: " + item.NombreArchivoOriginal);
+                    writer.WriteLine("Razón de Compresión: " + item.RazonCompresion);
+                    writer.WriteLine("Factor de compresión: " + item.FactorCompresion);
+                    writer.WriteLine("Porcentaje de reducción: " + item.PorcentajeReduccion);
+                }
+            }
         }
     }
 }

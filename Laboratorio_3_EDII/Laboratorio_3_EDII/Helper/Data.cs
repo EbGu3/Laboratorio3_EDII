@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EDII_PROYECTO.Huffman;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static Laboratorio_3_EDII.Manager.Arbol;
@@ -17,6 +18,7 @@ namespace Laboratorio_3_EDII.Helper
             }
         }
         public int value;
+        public List<Files> PilaArchivosComprimidos = new List<Files>();
         public List<CaracterCodigo> ListaCod = new List<CaracterCodigo>();
         public Dictionary<string, byte> DicCarcacteres = new Dictionary<string, byte>();
         public int grade;

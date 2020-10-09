@@ -1,0 +1,5 @@
+Nombre Archivo Original: cuento
+Nombre y ruta del archivo comprimido: C:\Users\kevin\source\repos\Laboratorio3_EDII\Laboratorio_3_EDII\API_Huffman\Compress\Kevincito.huff
+Razón de Compresión: 0.6658532978408754
+Factor de compresión: 1.5018323153803443
+Porcentaje de reducción: 0.33414670215912456

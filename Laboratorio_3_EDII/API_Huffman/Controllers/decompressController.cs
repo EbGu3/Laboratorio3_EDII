@@ -37,7 +37,6 @@ namespace API_Huffman.Controllers
                 Directory.CreateDirectory($"Decompress");
             }
             var path = Path.Combine($"Upload", file.FileName);
-            //Comprobar directorios
             try
             {
                 if (Path.GetExtension(file.FileName) == ".huff")
@@ -48,7 +47,6 @@ namespace API_Huffman.Controllers
                         await file.CopyToAsync(this_file);
                         new_Path = Path.GetFullPath(this_file.Name);
                     }
-
                     using (var new_File = new FileStream(new_Path, FileMode.Open))
                     {
                         CompressHuffman Huffman = new CompressHuffman();

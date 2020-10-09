@@ -38,7 +38,6 @@ namespace API_Huffman.Controllers
                 Directory.CreateDirectory($"Compress");
             }
             var path = Path.Combine($"Upload", file.FileName);
-            //Comprobar directorios
             try
             {
                 if (Path.GetExtension(file.FileName) == ".txt")
