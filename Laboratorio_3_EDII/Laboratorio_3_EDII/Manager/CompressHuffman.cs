@@ -14,21 +14,22 @@ namespace Laboratorio_3_EDII.Manager
         /// <summary>
         /// Obtiene un archivo de texto para devolver un archivo comprimido con extensión .huff
         /// </summary>
-        /// <param name="Archivo"></param>
-        public void CompresionHuffman(FileStream Archivo)
+        /// <param name="exportado"></param>
+        /// <param name="name"></param>
+        public void Compress_File(FileStream exportado, string name)
         {
-            string nombreArchivo = Path.GetFileNameWithoutExtension(Archivo.Name);
+            string nombreArchivo = Path.GetFileNameWithoutExtension(exportado.Name);
             var huffman = new Huffman();
             var PropiedadesArchivoActual = new Files();
-            PropiedadesArchivoActual.TamanoArchivoDescomprimido = Archivo.Length;
-            PropiedadesArchivoActual.NombreArchivoOriginal = Archivo.Name;
-            Archivo.Close();
-            var direccion = Path.GetFullPath(Archivo.Name);
+            PropiedadesArchivoActual.TamanoArchivoDescomprimido = exportado.Length;
+            PropiedadesArchivoActual.NombreArchivoOriginal = exportado.Name;
+            exportado.Close();
+            var direccion = Path.GetFullPath(exportado.Name);
             int cantidadCaracteres = huffman.Leer(direccion);
             huffman.CrearArbol();
             byte[] encabezado = huffman.CrearEncabezado(cantidadCaracteres);
-            nombreArchivo = nombreArchivo.Replace("EXPORTADO_", string.Empty);
-            using (FileStream ArchivoComprimir = new FileStream($"TusArchivos/{nombreArchivo}" + ".huff", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            var full_path = $"Compress\\" + name + ".huff";
+            using (FileStream ArchivoComprimir = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 foreach (var item in encabezado)
                 {
@@ -37,7 +38,7 @@ namespace Laboratorio_3_EDII.Manager
                 int bufferLength = 80;
                 var buffer = new byte[bufferLength];
                 string textoCifrado = string.Empty;
-                using (var file = new FileStream(Archivo.Name, FileMode.Open))
+                using (var file = new FileStream(exportado.Name, FileMode.Open))
                 {
                     using (var reader = new BinaryReader(file))
                     {
@@ -77,13 +78,12 @@ namespace Laboratorio_3_EDII.Manager
         /// Obtiene un archivo comprimido con extensión huff y devuelve el archivo original con extensión .txt
         /// </summary>
         /// <param name="Importado"></param>
-        public void DescompresionHuffman(FileStream Importado)
+        public void Decompress_File(FileStream Importado)
         {
             string nombreArchivo = Path.GetFileNameWithoutExtension(Importado.Name);
-            nombreArchivo = nombreArchivo.Replace("IMPORTADO_", string.Empty);
-            using (FileStream archivo = new FileStream(Data.Instance.adress, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            var full_path = $"Decompress\\";
+            using (FileStream archivo = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
-                Data.Instance.DirectorioHuff = archivo.Name;
                 int contador = 0;
                 int contadorCarac = 0;
                 int CantCaracteres = 0;
@@ -174,10 +174,8 @@ namespace Laboratorio_3_EDII.Manager
             };
             Data.Instance.DicCarcacteres.Clear();
         }
-
         public void CompressionHuffman(string Cadena)
         {
-
             string TextoCifrado = string.Empty;
             var CantidadCaracteres = 0;
             var Huffman = new Huffman();
@@ -194,10 +192,8 @@ namespace Laboratorio_3_EDII.Manager
                         TextoCifrado += caracterList.codigo;
                     }
                 }
-
             }
             Console.WriteLine(TextoCifrado);
-
         }
     }
 }

@@ -19,7 +19,6 @@ namespace Laboratorio_3_EDII.Helper
         public int value;
         public List<CaracterCodigo> ListaCod = new List<CaracterCodigo>();
         public Dictionary<string, byte> DicCarcacteres = new Dictionary<string, byte>();
-        public string DirectorioHuff;
         public int grade;
         public Delegate getNode;
         public Delegate getText;

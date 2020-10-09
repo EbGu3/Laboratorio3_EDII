@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Laboratorio_3_EDII.Helper;
 
 namespace API_Huffman.Controllers
 {

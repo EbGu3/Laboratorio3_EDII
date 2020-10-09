@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Laboratorio_3_EDII;
+using Laboratorio_3_EDII.Manager;
 using System.IO;
+using Laboratorio_3_EDII.Helper;
 
 namespace API_Huffman.Controllers
 {
@@ -42,9 +43,16 @@ namespace API_Huffman.Controllers
             {
                 if (Path.GetExtension(file.FileName) == ".txt")
                 {
+                    var new_Path = string.Empty;
                     using (var this_file = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(this_file);
+                        new_Path = Path.GetFullPath(this_file.Name);
+                    }
+                    using (var new_File = new FileStream(new_Path, FileMode.Open))
+                    {
+                        CompressHuffman Huffman = new CompressHuffman();
+                        Huffman.Compress_File(new_File, name);
                     }
                     return Ok("El archivo ha sido comprimido exitosamente!");
                 }

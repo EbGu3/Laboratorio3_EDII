@@ -87,8 +87,7 @@ namespace Laboratorio_3_EDII.Manager
             Arbol ArbolH = new Arbol();
 
             ArbolH.EtiquetarNodo(ArbolH.ConstruirNodo(FrecuenciaOrden));
-
-            //Agregar Instancia a la API
+            Data.Instance.ListaCod = ArbolH.ListaCodigos;
         }
 
         public byte[] CrearEncabezado(int noCaracteres)
