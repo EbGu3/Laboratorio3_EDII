@@ -27,6 +27,7 @@ namespace Laboratorio_3_EDII.Manager
             int cantidadCaracteres = huffman.Leer(direccion);
             huffman.CrearArbol();
             byte[] encabezado = huffman.CrearEncabezado(cantidadCaracteres);
+            List<Files> PilaArchivosComprimidos = new List<Files>();
             using (FileStream ArchivoComprimir = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 PropiedadesArchivoActual.NombreArchivoOriginal = Path.GetFullPath(ArchivoComprimir.Name);
@@ -63,8 +64,8 @@ namespace Laboratorio_3_EDII.Manager
                         PropiedadesArchivoActual.RazonCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido);
                         PropiedadesArchivoActual.FactorCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido);
                         PropiedadesArchivoActual.PorcentajeReduccion = (Convert.ToDouble(1) - PropiedadesArchivoActual.RazonCompresion).ToString();
-                        Data.Instance.PilaArchivosComprimidos.Add(PropiedadesArchivoActual);
-                        Compressed(Data.Instance.PilaArchivosComprimidos, Path.GetFileNameWithoutExtension(fileToCompress.Name));
+                        PilaArchivosComprimidos.Add(PropiedadesArchivoActual);
+                        Compressed(PilaArchivosComprimidos, Path.GetFileNameWithoutExtension(fileToCompress.Name));
                     }
                 }
                 if (textoCifrado.Length > 0 && (textoCifrado.Length % 8) == 0)
@@ -202,8 +203,8 @@ namespace Laboratorio_3_EDII.Manager
         }
         public void Compressed(List<Files> List_file, string name)
         {
-            var full_path = $"Compress\\Propiedades_" + name + ".txt";
-            using (TextWriter writer = new StreamWriter(full_path))
+            var full_path = $"Compress\\Factores de Compresion.txt";
+            using (StreamWriter writer = File.AppendText(full_path))
             {
                 foreach (var item in List_file)
                 {

@@ -18,7 +18,6 @@ namespace Laboratorio_3_EDII.Helper
             }
         }
         public int value;
-        public List<Files> PilaArchivosComprimidos = new List<Files>();
         public List<CaracterCodigo> ListaCod = new List<CaracterCodigo>();
         public Dictionary<string, byte> DicCarcacteres = new Dictionary<string, byte>();
         public int grade;
