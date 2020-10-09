@@ -30,7 +30,8 @@ namespace Laboratorio_3_EDII.Manager
             List<Files> PilaArchivosComprimidos = new List<Files>();
             using (FileStream ArchivoComprimir = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
-                PropiedadesArchivoActual.NombreArchivoOriginal = Path.GetFullPath(ArchivoComprimir.Name);
+                PropiedadesArchivoActual.NombreArchivoOriginal = Path.GetFileNameWithoutExtension(fileToCompress.Name);
+                PropiedadesArchivoActual.RutaArchivoComprimido = Path.GetFullPath(ArchivoComprimir.Name);
                 foreach (var item in encabezado)
                 {
                     ArchivoComprimir.WriteByte(item);
@@ -208,11 +209,11 @@ namespace Laboratorio_3_EDII.Manager
             {
                 foreach (var item in List_file)
                 {
-                    writer.WriteLine("Nombre Archivo Original: " + name);
-                    writer.WriteLine("Nombre y ruta del archivo comprimido: " + item.NombreArchivoOriginal);
-                    writer.WriteLine("Razón de Compresión: " + item.RazonCompresion);
-                    writer.WriteLine("Factor de compresión: " + item.FactorCompresion);
-                    writer.WriteLine("Porcentaje de reducción: " + item.PorcentajeReduccion);
+                    writer.WriteLine(item.NombreArchivoOriginal);
+                    writer.WriteLine(item.RutaArchivoComprimido);
+                    writer.WriteLine(item.RazonCompresion);
+                    writer.WriteLine(item.FactorCompresion);
+                    writer.WriteLine(item.PorcentajeReduccion);
                 }
             }
         }
