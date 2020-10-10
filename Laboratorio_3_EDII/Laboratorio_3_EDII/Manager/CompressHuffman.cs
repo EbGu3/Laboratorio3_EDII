@@ -181,23 +181,17 @@ namespace Laboratorio_3_EDII.Manager
             };
             Data.Instance.DicCarcacteres.Clear();
         }
-        
-        public void CompressionHuffman(string Cadena)
+
+        public string CompressionHuffman(string Cadena)
         {
             string TextoCifrado = string.Empty;
             var CantidadCaracteres = 0;
             var Huffman = new Huffman();
             CantidadCaracteres = Huffman.LeerCadena(Cadena);
             var ListadoCodigos = Huffman.CrearTree();
-
-            //Obtener frecuencias
             var ListFrecuencias = Huffman.ReturnFrecuencias();
-
             string Encabezado = AddData(ListFrecuencias.Count);
-
             TextoCifrado = Encabezado;
-
-            //Texto en Binario
             for (int i = 0; i < Cadena.Length; i++)
             {
                 foreach (var caracterList in ListadoCodigos)
@@ -209,20 +203,30 @@ namespace Laboratorio_3_EDII.Manager
                     }
                 }
             }
-            //Texto en byte
-            var cont = 0;
-            byte TextoComprimir;
-            for (int i = 0; i < TextoCifrado.Length; i++)
+            var txtCompreso = string.Empty;
+            if (TextoCifrado.Length % 8 != 0)
             {
-                cont += 8;
-                string text = TextoCifrado.Substring(i, cont);
-                    TextoComprimir = Convert.ToByte(text,2);
-                    Console.WriteLine(TextoComprimir);
-               
-                i = i + 8 - 1;
+                while (TextoCifrado.Length % 8 != 0)
+                {
+                    TextoCifrado += "0";
+                }
+            }
+            var data = GetBytesFromBinaryString(TextoCifrado);
+            var txt = Encoding.ASCII.GetString(data);
+            return txt;
+        }
+        public Byte[] GetBytesFromBinaryString(String binary)
+        {
+            var list = new List<Byte>();
+
+            for (int i = 0; i < binary.Length; i += 8)
+            {
+                String t = binary.Substring(i, 8);
+
+                list.Add(Convert.ToByte(t, 2));
             }
 
-            Console.WriteLine(TextoCifrado);
+            return list.ToArray();
         }
 
         public void Compressed(List<Files> List_file, string name)
@@ -247,14 +251,14 @@ namespace Laboratorio_3_EDII.Manager
             string EncabezadoC;
             int CantidadRecorrido = 3;
             string Recorrido;
-            var EncabezadoF=string.Empty;
+            var EncabezadoF = string.Empty;
 
-            EncabezadoC = Convert.ToString(CantidadCaracteres,2);
+            EncabezadoC = Convert.ToString(CantidadCaracteres, 2);
             EncabezadoC = EncabezadoC.PadLeft(16, '0');
 
             Recorrido = Convert.ToString(CantidadRecorrido, 2);
             Recorrido = Recorrido.PadLeft(3, '0');
-            
+
             EncabezadoF = EncabezadoC + Recorrido;
             return EncabezadoF;
         }

@@ -14,7 +14,9 @@ namespace Consola_Huffman
             string Cadena = Console.ReadLine();
 
             var CompressHuffman = new CompressHuffman();
-            CompressHuffman.CompressionHuffman(Cadena);
+            Console.WriteLine("Cadena: " + Cadena);
+            Console.WriteLine("Compresa Huffman: " + CompressHuffman.CompressionHuffman(Cadena));
+            Console.ReadKey();
         }
     }
 }
