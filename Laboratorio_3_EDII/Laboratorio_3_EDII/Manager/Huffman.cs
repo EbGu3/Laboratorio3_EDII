@@ -114,5 +114,10 @@ namespace Laboratorio_3_EDII.Manager
             ArbolH.EtiquetarNodo(ArbolH.ConstruirNodo(FrecuenciaOrden));
             return ArbolH.ListaCodigos;
         }
+
+        public List<Node> ReturnFrecuencias()
+        {
+            return Frecuencias;
+        }
     }
 }

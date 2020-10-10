@@ -181,6 +181,7 @@ namespace Laboratorio_3_EDII.Manager
             };
             Data.Instance.DicCarcacteres.Clear();
         }
+        
         public void CompressionHuffman(string Cadena)
         {
             string TextoCifrado = string.Empty;
@@ -189,6 +190,14 @@ namespace Laboratorio_3_EDII.Manager
             CantidadCaracteres = Huffman.LeerCadena(Cadena);
             var ListadoCodigos = Huffman.CrearTree();
 
+            //Obtener frecuencias
+            var ListFrecuencias = Huffman.ReturnFrecuencias();
+
+            string Encabezado = AddData(ListFrecuencias.Count);
+
+            TextoCifrado = Encabezado;
+
+            //Texto en Binario
             for (int i = 0; i < Cadena.Length; i++)
             {
                 foreach (var caracterList in ListadoCodigos)
@@ -200,8 +209,22 @@ namespace Laboratorio_3_EDII.Manager
                     }
                 }
             }
+            //Texto en byte
+            var cont = 0;
+            byte TextoComprimir;
+            for (int i = 0; i < TextoCifrado.Length; i++)
+            {
+                cont += 8;
+                string text = TextoCifrado.Substring(i, cont);
+                    TextoComprimir = Convert.ToByte(text,2);
+                    Console.WriteLine(TextoComprimir);
+               
+                i = i + 8 - 1;
+            }
+
             Console.WriteLine(TextoCifrado);
         }
+
         public void Compressed(List<Files> List_file, string name)
         {
             var full_path = $"Compress\\Factores de Compresion.txt";
@@ -216,6 +239,24 @@ namespace Laboratorio_3_EDII.Manager
                     writer.WriteLine(item.PorcentajeReduccion);
                 }
             }
+        }
+
+        //Primeros 16 listado de frecuencias, Siguientes 3 cantidad de veces a obtener la frecuencia
+        public string AddData(int CantidadCaracteres)
+        {
+            string EncabezadoC;
+            int CantidadRecorrido = 3;
+            string Recorrido;
+            var EncabezadoF=string.Empty;
+
+            EncabezadoC = Convert.ToString(CantidadCaracteres,2);
+            EncabezadoC = EncabezadoC.PadLeft(16, '0');
+
+            Recorrido = Convert.ToString(CantidadRecorrido, 2);
+            Recorrido = Recorrido.PadLeft(3, '0');
+            
+            EncabezadoF = EncabezadoC + Recorrido;
+            return EncabezadoF;
         }
     }
 }
