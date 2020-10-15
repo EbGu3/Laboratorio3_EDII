@@ -4,9 +4,11 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laboratorio_3_EDII", "Laboratorio_3_EDII\Laboratorio_3_EDII.csproj", "{DF669EA2-14FA-4E4D-9C3C-51B8A460E368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Huffman", "API_Huffman\API_Huffman.csproj", "{5921A983-14F4-4AF5-A573-3CE67456F734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Huffman", "API_Huffman\API_Huffman.csproj", "{5921A983-14F4-4AF5-A573-3CE67456F734}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consola_Huffman", "Consola_Huffman\Consola_Huffman.csproj", "{A1D261DA-55FE-421D-8F62-6C1371F5763F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consola_Huffman", "Consola_Huffman\Consola_Huffman.csproj", "{A1D261DA-55FE-421D-8F62-6C1371F5763F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_LZW", "API_LZW\API_LZW.csproj", "{8E81E279-1DF9-4E8D-8639-0226140C74CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{A1D261DA-55FE-421D-8F62-6C1371F5763F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1D261DA-55FE-421D-8F62-6C1371F5763F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1D261DA-55FE-421D-8F62-6C1371F5763F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E81E279-1DF9-4E8D-8639-0226140C74CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E81E279-1DF9-4E8D-8639-0226140C74CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E81E279-1DF9-4E8D-8639-0226140C74CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E81E279-1DF9-4E8D-8639-0226140C74CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

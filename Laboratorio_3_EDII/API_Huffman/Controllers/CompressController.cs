@@ -15,7 +15,7 @@ namespace API_Huffman.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class CompressController : ControllerBase
+    public class compressController : ControllerBase
     {
         /// <summary>
         /// Importación del archivo para comprimir
