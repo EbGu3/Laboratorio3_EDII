@@ -189,9 +189,7 @@ namespace Laboratorio_3_EDII.Manager
             var Huffman = new Huffman();
             CantidadCaracteres = Huffman.LeerCadena(Cadena);
             var ListadoCodigos = Huffman.CrearTree();
-            var ListFrecuencias = Huffman.ReturnFrecuencias();
-            string Encabezado = AddData(ListFrecuencias.Count);
-            TextoCifrado = Encabezado;
+          
             for (int i = 0; i < Cadena.Length; i++)
             {
                 foreach (var caracterList in ListadoCodigos)
@@ -245,22 +243,5 @@ namespace Laboratorio_3_EDII.Manager
             }
         }
 
-        //Primeros 16 listado de frecuencias, Siguientes 3 cantidad de veces a obtener la frecuencia
-        public string AddData(int CantidadCaracteres)
-        {
-            string EncabezadoC;
-            int CantidadRecorrido = 3;
-            string Recorrido;
-            var EncabezadoF = string.Empty;
-
-            EncabezadoC = Convert.ToString(CantidadCaracteres, 2);
-            EncabezadoC = EncabezadoC.PadLeft(16, '0');
-
-            Recorrido = Convert.ToString(CantidadRecorrido, 2);
-            Recorrido = Recorrido.PadLeft(3, '0');
-
-            EncabezadoF = EncabezadoC + Recorrido;
-            return EncabezadoF;
-        }
     }
 }
