@@ -22,7 +22,7 @@ namespace API_Huffman.Controllers
         {
             try
             {
-                var full_path = $"Compress\\Factores de Compresion.txt";
+                var full_path = $"Compress\\Factores de Compresion Huffman.txt";
                 List<Files> json = new List<Files>();
                 using (StreamReader file = new StreamReader(full_path))
                 {
