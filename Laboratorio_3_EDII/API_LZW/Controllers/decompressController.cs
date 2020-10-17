@@ -38,7 +38,7 @@ namespace API_LZW.Controllers
                         await file.CopyToAsync(this_file);
                         new_Path = Path.GetFullPath(this_file.Name);
                     }
-
+                    fileHandeling.Decompress_LZW(new_Path);
                     return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .lzw");

@@ -213,23 +213,22 @@ namespace Laboratorio_3_EDII.Manager
             var txt = Encoding.ASCII.GetString(data);
             return txt;
         }
-        public Byte[] GetBytesFromBinaryString(String binary)
+        public Byte[] GetBytesFromBinaryString(string binary)
         {
             var list = new List<Byte>();
 
             for (int i = 0; i < binary.Length; i += 8)
             {
-                String t = binary.Substring(i, 8);
+                string t = binary.Substring(i, 8);
 
                 list.Add(Convert.ToByte(t, 2));
             }
 
             return list.ToArray();
         }
-
         public void Compressed(List<Files> List_file, string name)
         {
-            var full_path = $"Compress\\Factores de Compresion.txt";
+            var full_path = $"Compress\\Factores de Compresion Huffman.txt";
             using (StreamWriter writer = File.AppendText(full_path))
             {
                 foreach (var item in List_file)
@@ -242,6 +241,5 @@ namespace Laboratorio_3_EDII.Manager
                 }
             }
         }
-
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using EDII_PROYECTO.Huffman;
+using Laboratorio_3_EDII.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace API_LZW.Controllers
 {
@@ -22,28 +19,8 @@ namespace API_LZW.Controllers
         {
             try
             {
-                var full_path = $"Compress\\Factores de Compresion ZLW.txt";
-                List<Files> json = new List<Files>();
-                using (StreamReader file = new StreamReader(full_path))
-                {
-                    string ln;
-                    while ((ln = file.ReadLine()) != null)
-                    {
-                        Files values = new Files();
-                        values.NombreArchivoOriginal = ln;
-                        ln = file.ReadLine();
-                        values.RutaArchivoComprimido = ln;
-                        ln = file.ReadLine();
-                        values.RazonCompresion = Convert.ToDouble(ln);
-                        ln = file.ReadLine();
-                        values.FactorCompresion = Convert.ToDouble(ln);
-                        ln = file.ReadLine();
-                        values.PorcentajeReduccion = ln;
-                        json.Add(values);
-                    }
-                }
-                var retorno = JsonConvert.SerializeObject(json);
-                return Ok(retorno);
+                FileHandeling fileHandeling = new FileHandeling();
+                return Ok(fileHandeling.Get_Compress("LZW"));
             }
             catch (Exception e)
             {

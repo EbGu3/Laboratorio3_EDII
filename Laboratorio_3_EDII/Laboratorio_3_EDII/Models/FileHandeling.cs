@@ -1,4 +1,8 @@
-﻿using Laboratorio_3_EDII.Manager;
+﻿using EDII_PROYECTO.Huffman;
+using Laboratorio_3_EDII.Manager;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Laboratorio_3_EDII.Models
@@ -81,6 +85,30 @@ namespace Laboratorio_3_EDII.Models
             {
                 //Llamar para descompresionar
             }
+        }
+        public string Get_Compress(string type)
+        {
+            var full_path = $"Compress\\Factores de Compresion " + type + ".txt";
+            List<Files> json = new List<Files>();
+            using (StreamReader file = new StreamReader(full_path))
+            {
+                string ln;
+                while ((ln = file.ReadLine()) != null)
+                {
+                    Files values = new Files();
+                    values.NombreArchivoOriginal = ln;
+                    ln = file.ReadLine();
+                    values.RutaArchivoComprimido = ln;
+                    ln = file.ReadLine();
+                    values.RazonCompresion = Convert.ToDouble(ln);
+                    ln = file.ReadLine();
+                    values.FactorCompresion = Convert.ToDouble(ln);
+                    ln = file.ReadLine();
+                    values.PorcentajeReduccion = ln;
+                    json.Add(values);
+                }
+            }
+            return JsonConvert.SerializeObject(json);
         }
     }
 }
