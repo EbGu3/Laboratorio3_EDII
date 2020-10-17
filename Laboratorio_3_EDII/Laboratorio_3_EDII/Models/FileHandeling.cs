@@ -110,5 +110,30 @@ namespace Laboratorio_3_EDII.Models
             }
             return JsonConvert.SerializeObject(json);
         }
+        public string Get_Name(string type)
+        {
+            var full_path = $"Compress\\Factores de Compresion " + type + ".txt";
+            var fileName = string.Empty;
+            using (var nameFile = new StreamReader(full_path))
+            {
+                fileName = nameFile.ReadLine();
+            }
+            return fileName;
+        }
+        public void Compressed(List<Files> List_file, string name, string type)
+        {
+            var full_path = $"Compress\\Factores de Compresion " + type + ".txt";
+            using (StreamWriter writer = File.AppendText(full_path))
+            {
+                foreach (var item in List_file)
+                {
+                    writer.WriteLine(item.NombreArchivoOriginal);
+                    writer.WriteLine(item.RutaArchivoComprimido);
+                    writer.WriteLine(item.RazonCompresion);
+                    writer.WriteLine(item.FactorCompresion);
+                    writer.WriteLine(item.PorcentajeReduccion);
+                }
+            }
+        }
     }
 }

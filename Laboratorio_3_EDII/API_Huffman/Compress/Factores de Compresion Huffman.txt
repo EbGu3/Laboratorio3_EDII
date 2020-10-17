@@ -3,3 +3,8 @@ C:\Users\kevin\source\repos\Laboratorio3_EDII\Laboratorio_3_EDII\API_Huffman\Com
 0.6658532978408754
 1.5018323153803443
 0.33414670215912456
+cuento
+C:\Users\kevin\source\repos\Laboratorio3_EDII\Laboratorio_3_EDII\API_Huffman\Compress\Prueba Cuento.huff
+0.6658532978408754
+1.5018323153803443
+0.33414670215912456

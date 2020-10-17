@@ -6,6 +6,8 @@ using System.Text;
 using EDII_PROYECTO.Huffman;
 using Laboratorio_3_EDII.Helper;
 using Laboratorio_3_EDII.IService;
+using System.Threading.Tasks;
+using Laboratorio_3_EDII.Models;
 
 namespace Laboratorio_3_EDII.Manager
 {
@@ -66,7 +68,8 @@ namespace Laboratorio_3_EDII.Manager
                         PropiedadesArchivoActual.FactorCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido);
                         PropiedadesArchivoActual.PorcentajeReduccion = (Convert.ToDouble(1) - PropiedadesArchivoActual.RazonCompresion).ToString();
                         PilaArchivosComprimidos.Add(PropiedadesArchivoActual);
-                        Compressed(PilaArchivosComprimidos, Path.GetFileNameWithoutExtension(fileToCompress.Name));
+                        FileHandeling fileHandeling = new FileHandeling();
+                        fileHandeling.Compressed(PilaArchivosComprimidos, Path.GetFileNameWithoutExtension(fileToCompress.Name), "Huffman");
                     }
                 }
                 if (textoCifrado.Length > 0 && (textoCifrado.Length % 8) == 0)
@@ -87,8 +90,9 @@ namespace Laboratorio_3_EDII.Manager
         /// <param name="fileToDecompress"></param>
         public void Decompress_File(FileStream fileToDecompress)
         {
-            string nombreArchivo = Path.GetFileNameWithoutExtension(fileToDecompress.Name);
-            var full_path = $"Decompress\\" + nombreArchivo + ".txt";
+            FileHandeling fileHandeling = new FileHandeling();
+            var fileName = fileHandeling.Get_Name("Huffman");
+            var full_path = $"Decompress\\" + fileName + ".txt";
             using (FileStream archivo = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 int contador = 0;
@@ -225,21 +229,6 @@ namespace Laboratorio_3_EDII.Manager
             }
 
             return list.ToArray();
-        }
-        public void Compressed(List<Files> List_file, string name)
-        {
-            var full_path = $"Compress\\Factores de Compresion Huffman.txt";
-            using (StreamWriter writer = File.AppendText(full_path))
-            {
-                foreach (var item in List_file)
-                {
-                    writer.WriteLine(item.NombreArchivoOriginal);
-                    writer.WriteLine(item.RutaArchivoComprimido);
-                    writer.WriteLine(item.RazonCompresion);
-                    writer.WriteLine(item.FactorCompresion);
-                    writer.WriteLine(item.PorcentajeReduccion);
-                }
-            }
         }
     }
 }
