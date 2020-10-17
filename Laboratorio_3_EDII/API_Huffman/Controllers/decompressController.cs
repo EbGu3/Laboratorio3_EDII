@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Laboratorio_3_EDII.Helper;
-using Laboratorio_3_EDII.Manager;
+using Laboratorio_3_EDII.Models;
 
 namespace API_Huffman.Controllers
 {
@@ -28,30 +25,20 @@ namespace API_Huffman.Controllers
         [HttpPost]
         public async Task<IActionResult> Post_File_Export(IFormFile file)
         {
-            if (!Directory.Exists($"Upload"))
-            {
-                Directory.CreateDirectory($"Upload");
-            }
-            if (!Directory.Exists($"Decompress"))
-            {
-                Directory.CreateDirectory($"Decompress");
-            }
-            var path = Path.Combine($"Upload", file.FileName);
             try
             {
                 if (Path.GetExtension(file.FileName) == ".huff")
                 {
+                    FileHandeling fileHandeling = new FileHandeling();
+                    fileHandeling.Create_File_Export();
                     var new_Path = string.Empty;
+                    var path = Path.Combine($"Upload", file.FileName);
                     using (var this_file = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(this_file);
                         new_Path = Path.GetFullPath(this_file.Name);
                     }
-                    using (var new_File = new FileStream(new_Path, FileMode.Open))
-                    {
-                        CompressHuffman Huffman = new CompressHuffman();
-                        Huffman.Decompress_File(new_File);
-                    }
+                    fileHandeling.Decompress_Huffman(new_Path);
                     return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .huff");

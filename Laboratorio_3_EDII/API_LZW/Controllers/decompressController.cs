@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Laboratorio_3_EDII.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,29 +25,20 @@ namespace API_LZW.Controllers
         [HttpPost]
         public async Task<IActionResult> Post_File_Export(IFormFile file)
         {
-            if (!Directory.Exists($"Upload"))
-            {
-                Directory.CreateDirectory($"Upload");
-            }
-            if (!Directory.Exists($"Decompress"))
-            {
-                Directory.CreateDirectory($"Decompress");
-            }
-            var path = Path.Combine($"Upload", file.FileName);
             try
             {
                 if (Path.GetExtension(file.FileName) == ".lzw")
                 {
+                    FileHandeling fileHandeling = new FileHandeling();
+                    fileHandeling.Create_File_Import();
                     var new_Path = string.Empty;
+                    var path = Path.Combine($"Upload", file.FileName);
                     using (var this_file = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(this_file);
                         new_Path = Path.GetFullPath(this_file.Name);
                     }
-                    using (var new_File = new FileStream(new_Path, FileMode.Open))
-                    {
-                        //Llamar para descompresionar
-                    }
+
                     return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .lzw");
