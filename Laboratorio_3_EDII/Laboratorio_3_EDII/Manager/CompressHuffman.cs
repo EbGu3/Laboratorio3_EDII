@@ -91,7 +91,7 @@ namespace Laboratorio_3_EDII.Manager
         public void Decompress_File(FileStream fileToDecompress)
         {
             FileHandeling fileHandeling = new FileHandeling();
-            var fileName = fileHandeling.Get_Name("Huffman");
+            var fileName = fileHandeling.Get_Name("Huffman", fileToDecompress.Name);
             var full_path = $"Decompress\\" + fileName + ".txt";
             using (FileStream archivo = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
