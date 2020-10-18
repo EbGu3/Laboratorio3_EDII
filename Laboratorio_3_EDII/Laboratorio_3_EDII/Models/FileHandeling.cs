@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
 namespace Laboratorio_3_EDII.Models
 {
@@ -108,7 +109,16 @@ namespace Laboratorio_3_EDII.Models
                     json.Add(values);
                 }
             }
-            return JsonConvert.SerializeObject(json);
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+
+            string jsonString;
+            jsonString = System.Text.Json.JsonSerializer.Serialize(json, options);
+
+            return jsonString;
         }
         public string Get_Name(string type, string compressName)
         {
