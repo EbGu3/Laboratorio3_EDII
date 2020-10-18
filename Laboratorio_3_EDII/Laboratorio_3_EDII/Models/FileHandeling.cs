@@ -114,10 +114,8 @@ namespace Laboratorio_3_EDII.Models
             {
                 WriteIndented = true,
             };
-
             string jsonString;
             jsonString = System.Text.Json.JsonSerializer.Serialize(json, options);
-
             return jsonString;
         }
         public string Get_Name(string type, string compressName)
