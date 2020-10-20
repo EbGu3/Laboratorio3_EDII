@@ -9,5 +9,6 @@
         public double RazonCompresion { get; set; }
         public double FactorCompresion { get; set; }
         public string PorcentajeReduccion { get; set; }
+        public string FormatoCompresion { get; internal set; }
     }
 }

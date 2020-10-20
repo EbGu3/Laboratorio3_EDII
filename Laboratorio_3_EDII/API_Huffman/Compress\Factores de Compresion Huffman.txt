@@ -1,0 +1,5 @@
+Prueba
+/Users/eber.g/Desktop/PrimerAño/2Ciclo2020/EstructuraDatos II/Laboratorios/Laboratorio4_EDII/Laboratorio3_EDII/Laboratorio_3_EDII/API_Huffman/Compress\Eber.huff
+5.166666666666667
+0.1935483870967742
+-4.166666666666667

@@ -3,6 +3,7 @@ using Laboratorio_3_EDII.Manager;
 using Laboratorio_3_EDII.IService;
 using Laboratorio_3_EDII.Models;
 using Laboratorio_3_EDII.Helper;
+using System.IO;
 
 namespace Consola_Huffman
 {
@@ -17,6 +18,19 @@ namespace Consola_Huffman
             Console.WriteLine("Cadena: " + Cadena);
             Console.WriteLine("Compresa Huffman: " + CompressHuffman.CompressionHuffman(Cadena));
             Console.ReadKey();
+
+            string RUTA = "/Users/eber.g/Desktop/Prueba.txt";
+
+            using(var File  = new FileStream(RUTA, FileMode.OpenOrCreate))
+            {
+                CompressLZW compressLZW = new CompressLZW();
+
+                compressLZW.CompresionLZWImportar(File);
+
+            }
+            
+
+
         }
     }
 }
