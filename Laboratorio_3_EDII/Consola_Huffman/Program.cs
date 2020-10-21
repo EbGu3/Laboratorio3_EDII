@@ -19,13 +19,28 @@ namespace Consola_Huffman
             Console.WriteLine("Compresa Huffman: " + CompressHuffman.CompressionHuffman(Cadena));
             Console.ReadKey();
 
-            string RUTA = "/Users/eber.g/Desktop/Prueba.txt";
+            string RUTA = "/Users/eber.g/Desktop/PrimerAño/2Ciclo2020/EstructuraDatos II/Laboratorios/Laboratorio4_EDII/Laboratorio3_EDII/Laboratorio_3_EDII/Consola_Huffman/bin/Debug/netcoreapp3.1/Compress/Eber.lzw";
+
+
+
+
 
             using(var File  = new FileStream(RUTA, FileMode.OpenOrCreate))
             {
-                CompressLZW compressLZW = new CompressLZW();
+                FileHandeling fileHandeling = new FileHandeling();
+                var extesión = Path.GetExtension(File.Name);
 
-                compressLZW.CompresionLZWImportar(File);
+                if(extesión == ".txt")
+                {
+                    fileHandeling.Create_File_Import();
+                    fileHandeling.Compress_LZW(File.Name, "Eber");
+
+                }
+                else if(extesión == ".lzw")
+                {
+                    fileHandeling.Create_File_Export();
+                    fileHandeling.Decompress_LZW(File.Name);
+                }
 
             }
             

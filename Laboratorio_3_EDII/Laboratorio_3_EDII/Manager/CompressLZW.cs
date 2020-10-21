@@ -42,7 +42,7 @@ namespace Laboratorio_3_EDII.Manager
                 Lectura.ReadByte();
                 Lectura.ReadByte();
                 CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
-                var TamanoBits = string.Empty;
+                var TamanoBits = " ";
                 while (CaracterDiccionario != '.')
                 {
                     TamanoBits += CaracterDiccionario;
@@ -121,7 +121,7 @@ namespace Laboratorio_3_EDII.Manager
                 }
             }
         }
-        public void Compress_File(FileStream ArchivoImportado, string nameFile)
+        public void Compress_File(FileStream ArchivoImportado, string nameFile = null)
         {
             Dictionary<string, int> diccionario_LZW = new Dictionary<string, int>();
             var Extension = Path.GetExtension(ArchivoImportado.Name);
