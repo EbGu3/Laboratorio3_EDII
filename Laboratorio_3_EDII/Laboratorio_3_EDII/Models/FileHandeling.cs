@@ -72,7 +72,8 @@ namespace Laboratorio_3_EDII.Models
         {
             using (var new_File = new FileStream(new_Path, FileMode.Open))
             {
-                //Mandar archivo a compresión
+                CompressLZW compressLZW = new CompressLZW();
+                compressLZW.Compress_File(new_File, name);
             }
         }
         /// <summary>
@@ -84,7 +85,8 @@ namespace Laboratorio_3_EDII.Models
         {
             using (var new_File = new FileStream(new_Path, FileMode.Open))
             {
-                //Llamar para descompresionar
+                CompressLZW compressLZW = new CompressLZW();
+                compressLZW.Decompress_File(new_File);
             }
         }
         public string Get_Compress(string type)
@@ -106,6 +108,8 @@ namespace Laboratorio_3_EDII.Models
                     values.FactorCompresion = Convert.ToDouble(ln);
                     ln = file.ReadLine();
                     values.PorcentajeReduccion = ln;
+                    ln = file.ReadLine();
+                    values.FormatoCompresion = ln;
                     json.Add(values);
                 }
             }
@@ -130,9 +134,9 @@ namespace Laboratorio_3_EDII.Models
                     fileName = line;
                     var ruta = nameFile.ReadLine();
                     var fullname = Path.GetFileName(compressName);
-                    if (!(ruta.EndsWith(fullname)))
+                    if (!(ruta.EndsWith(fullname)))//Encontrar el nombre del archivo en la ruta
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < 4; i++)//Saltar a las siguientes lineas del archivo
                         {
                             nameFile.ReadLine();
                         }
@@ -157,6 +161,7 @@ namespace Laboratorio_3_EDII.Models
                     writer.WriteLine(item.RazonCompresion);
                     writer.WriteLine(item.FactorCompresion);
                     writer.WriteLine(item.PorcentajeReduccion);
+                    writer.WriteLine(type);
                 }
             }
         }

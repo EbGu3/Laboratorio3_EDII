@@ -29,7 +29,6 @@ namespace Laboratorio_3_EDII.Manager
             int cantidadCaracteres = huffman.Leer(direccion);
             huffman.CrearArbol();
             byte[] encabezado = huffman.CrearEncabezado(cantidadCaracteres);
-            List<Files> PilaArchivosComprimidos = new List<Files>();
             using (FileStream ArchivoComprimir = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 PropiedadesArchivoActual.NombreArchivoOriginal = Path.GetFileNameWithoutExtension(fileToCompress.Name);
@@ -63,6 +62,7 @@ namespace Laboratorio_3_EDII.Manager
                             }
                         }
                         reader.ReadBytes(bufferLength);
+                        List<Files> PilaArchivosComprimidos = new List<Files>();
                         PropiedadesArchivoActual.TamanoArchivoComprimido = ArchivoComprimir.Length;
                         PropiedadesArchivoActual.RazonCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido);
                         PropiedadesArchivoActual.FactorCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido);

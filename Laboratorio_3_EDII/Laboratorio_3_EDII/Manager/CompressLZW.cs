@@ -10,26 +10,12 @@ namespace Laboratorio_3_EDII.Manager
 {
     public class CompressLZW 
     {
-
-        #region Variables
-        public int BufferSize { get; private set; }
-        const int BufferLength = 100;
-        public List<Caracter> CaracteresExistentes = new List<Caracter>();
-        public int TotalCaracteres;
-        public Dictionary<string, byte> DiccionarioIndices = new Dictionary<string, byte>();
-        public string TextoEnBinario = "";
-        public string NombreArchivo;
-        #endregion
-        public void CompresionLZWExportar(FileStream ArchivoImportado)
+        public void Decompress_File(FileStream ArchivoImportado)
         {
-            NombreArchivo = Path.GetFileName(ArchivoImportado.Name).Replace("IMPORTADO_", "").Split('.')[0];
-            var Extension = Path.GetExtension(ArchivoImportado.Name);
-            var DiccionarioCar = new Dictionary<int, string>();
             using (var Lectura = new BinaryReader(ArchivoImportado))
             {
                 var CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
                 var CantidadCaracteresDiccionatrio = string.Empty;
-                //View
                 while (CaracterDiccionario != '.')
                 {
                     CantidadCaracteresDiccionatrio += CaracterDiccionario;
@@ -44,6 +30,7 @@ namespace Laboratorio_3_EDII.Manager
                 }
                 CaracterDiccionario = Convert.ToChar(Lectura.PeekChar());
                 var ByteEscrito = Lectura.ReadByte();
+                var DiccionarioCar = new Dictionary<int, string>();
                 while (DiccionarioCar.Count != Convert.ToInt32(CantidadCaracteresDiccionatrio))
                 {
                     if (!DiccionarioCar.ContainsValue(Convert.ToString(Convert.ToChar(ByteEscrito))))
@@ -62,6 +49,7 @@ namespace Laboratorio_3_EDII.Manager
                     CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
                 }
                 CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
+                var Extension = Path.GetExtension(ArchivoImportado.Name);
                 while (CaracterDiccionario != '\u0002')
                 {
                     Extension += CaracterDiccionario;
@@ -107,8 +95,9 @@ namespace Laboratorio_3_EDII.Manager
                 ListaComprimidos.RemoveAt(0);
                 var Decompressed = new System.Text.StringBuilder(PrimerCaracter);
                 ArchivoImportado.Close();
-                //View
-                using (FileStream ArchivoNuevo = new FileStream((@"TusArchivos/EXPORTADO_" + NombreArchivo + ".txt"), FileMode.OpenOrCreate))
+                FileHandeling fileHandeling = new FileHandeling();
+                var fileName = fileHandeling.Get_Name("LZW", ArchivoImportado.Name);
+                using (FileStream ArchivoNuevo = new FileStream($"Decompress/" + fileName, FileMode.OpenOrCreate))
                 {
                     using (StreamWriter writer = new StreamWriter(ArchivoNuevo))
                     {
@@ -132,25 +121,25 @@ namespace Laboratorio_3_EDII.Manager
                 }
             }
         }
-        public void CompresionLZWImportar(FileStream ArchivoImportado)
+        public void Compress_File(FileStream ArchivoImportado, string nameFile)
         {
-            Dictionary<string, int> LZWdiccionario = new Dictionary<string, int>();
+            Dictionary<string, int> diccionario_LZW = new Dictionary<string, int>();
             var Extension = Path.GetExtension(ArchivoImportado.Name);
-            var Nombre = Path.GetFileName(ArchivoImportado.Name).Replace("EXPORTADO_", "");
             var PropiedadesArchivoActual = new Files();
             FileInfo ArchivoAnalizado = new FileInfo(ArchivoImportado.Name);
             PropiedadesArchivoActual.TamanoArchivoDescomprimido = ArchivoAnalizado.Length;
             PropiedadesArchivoActual.NombreArchivoOriginal = ArchivoAnalizado.Name;
-            NombreArchivo = ArchivoAnalizado.Name.Split('.')[0];
             var ListaCaracteresExistentes = new List<byte>();
             var ListaCaracteresBinario = new List<string>();
             var ASCIIescribir = new List<int>();
             using (var Lectura = new BinaryReader(ArchivoImportado))
             {
-                using (FileStream writeStream = new FileStream((@"TusArchivos/IMPORTADO_" + NombreArchivo + ".lzw"), FileMode.OpenOrCreate))
+                using (FileStream writeStream = new FileStream($"Compress/" + nameFile + ".lzw", FileMode.OpenOrCreate))
                 {
+                    PropiedadesArchivoActual.RutaArchivoComprimido = Path.GetFullPath(writeStream.Name);
                     using (BinaryWriter writer = new BinaryWriter(writeStream))
                     {
+                        const int BufferLength = 100;
                         var byteBuffer = new byte[BufferLength];
                         while (Lectura.BaseStream.Position != Lectura.BaseStream.Length)
                         {
@@ -167,9 +156,9 @@ namespace Laboratorio_3_EDII.Manager
                         foreach (var item in ListaCaracteresExistentes)
                         {
                             var caractreres = Convert.ToChar(item);
-                            LZWdiccionario.Add(caractreres.ToString(), LZWdiccionario.Count + 1);
+                            diccionario_LZW.Add(caractreres.ToString(), diccionario_LZW.Count + 1);
                         }
-                        var diccionarioTam = Convert.ToString(LZWdiccionario.LongCount()) + ".";
+                        var diccionarioTam = Convert.ToString(diccionario_LZW.LongCount()) + ".";
                         writer.Write(diccionarioTam.ToCharArray());
                         Lectura.BaseStream.Position = 0;
                         var thisCaracter = string.Empty;
@@ -180,20 +169,20 @@ namespace Laboratorio_3_EDII.Manager
                             foreach (byte item in byteBuffer)
                             {
                                 var toAnalizar = thisCaracter + Convert.ToChar(item);
-                                if (LZWdiccionario.ContainsKey(toAnalizar))
+                                if (diccionario_LZW.ContainsKey(toAnalizar))
                                 {
                                     thisCaracter = toAnalizar;
                                 }
                                 else
                                 {
-                                    ASCIIescribir.Add(LZWdiccionario[thisCaracter]);
-                                    LZWdiccionario.Add(toAnalizar, LZWdiccionario.Count + 1);
+                                    ASCIIescribir.Add(diccionario_LZW[thisCaracter]);
+                                    diccionario_LZW.Add(toAnalizar, diccionario_LZW.Count + 1);
                                     thisCaracter = Convert.ToChar(item).ToString();
                                 }
                             }
                         }
-                        ASCIIescribir.Add(LZWdiccionario[thisCaracter]);
-                        var textotamano = Convert.ToString(LZWdiccionario.LongCount()) + ".";
+                        ASCIIescribir.Add(diccionario_LZW[thisCaracter]);
+                        var textotamano = Convert.ToString(diccionario_LZW.LongCount()) + ".";
                         writer.Write(textotamano.ToCharArray());
                         foreach (var item in ListaCaracteresExistentes)
                         {
@@ -249,18 +238,19 @@ namespace Laboratorio_3_EDII.Manager
                                 writer.Write(Convert.ToByte(Convert.ToInt32(item)));
                             }
                         }
+                        List<Files> PilaArchivosComprimidos = new List<Files>();
                         PropiedadesArchivoActual.TamanoArchivoComprimido = writeStream.Length;
                         PropiedadesArchivoActual.FactorCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido);
                         PropiedadesArchivoActual.RazonCompresion = Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoDescomprimido) / Convert.ToDouble(PropiedadesArchivoActual.TamanoArchivoComprimido);
                         PropiedadesArchivoActual.PorcentajeReduccion = (Convert.ToDouble(1) - PropiedadesArchivoActual.FactorCompresion).ToString();
-                        PropiedadesArchivoActual.FormatoCompresion = ".lzw";
-                        Factor FactorCompresion = new Factor();
-                        FactorCompresion.GuaradarCompresiones(PropiedadesArchivoActual, "LZW");
+                        PilaArchivosComprimidos.Add(PropiedadesArchivoActual);
+                        FileHandeling fileHandeling = new FileHandeling();
+                        fileHandeling.Compressed(PilaArchivosComprimidos, Path.GetFileNameWithoutExtension(ArchivoImportado.Name), "LZW");
                     }
                 }
             }
         }
-        #region Utilizables
+        #region Otros
         string OtroArchivo(string fileName, string sourcePath, string targetPath)
         {
             string sourceFile = Path.Combine(sourcePath, fileName);

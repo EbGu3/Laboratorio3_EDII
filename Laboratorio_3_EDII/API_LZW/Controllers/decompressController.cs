@@ -30,7 +30,7 @@ namespace API_LZW.Controllers
                 if (Path.GetExtension(file.FileName) == ".lzw")
                 {
                     FileHandeling fileHandeling = new FileHandeling();
-                    fileHandeling.Create_File_Import();
+                    fileHandeling.Create_File_Export();
                     var new_Path = string.Empty;
                     var path = Path.Combine($"Upload", file.FileName);
                     using (var this_file = new FileStream(path, FileMode.Create))
