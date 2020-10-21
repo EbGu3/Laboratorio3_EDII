@@ -48,7 +48,11 @@ namespace API_LZW
             }
 
             app.UseRouting();
-            app.UseSwagger();
+
+            app.UseSwagger(c => {
+                c.SerializeAsV2 = true;
+            });
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("./swagger/EDv2/swagger.json", "Compresión LZW - Estructura de Datos II");

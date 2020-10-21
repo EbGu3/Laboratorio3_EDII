@@ -32,8 +32,12 @@ namespace API_Huffman
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("EDv1", new OpenApiInfo { Title = "Estructura de Datos II", Version = "EDv1", Description = "Compresión Huffman" }
-                );
+                c.SwaggerDoc("EDv1", new OpenApiInfo
+                {
+                    Title = "Estructura de Datos II",
+                    Version = "EDv1",
+                    Description = "Compresión Huffman"
+                });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -49,10 +53,12 @@ namespace API_Huffman
             }
 
 
-            app.UseSwagger();
+            app.UseSwagger(c => {
+                c.SerializeAsV2 = true;
+            });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("./swagger/EDv1/swagger.json", "Compresión Huffman - Estructura de Datos II");
+                c.SwaggerEndpoint("/swagger/EDv1/swagger.yaml", "Compresión Huffman - Estructura de Datos II");
                 c.RoutePrefix = string.Empty;
             });
 
