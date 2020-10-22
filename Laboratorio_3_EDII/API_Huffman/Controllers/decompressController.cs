@@ -39,6 +39,7 @@ namespace API_Huffman.Controllers
                         new_Path = Path.GetFullPath(this_file.Name);
                     }
                     fileHandeling.Decompress_Huffman(new_Path);
+                    fileHandeling.Delete_Import(path);
                     return Ok("El archivo ha sido descomprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .huff");

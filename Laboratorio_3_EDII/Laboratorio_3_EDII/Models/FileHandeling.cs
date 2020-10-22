@@ -1,6 +1,5 @@
 ﻿using EDII_PROYECTO.Huffman;
 using Laboratorio_3_EDII.Manager;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,6 +87,10 @@ namespace Laboratorio_3_EDII.Models
                 CompressLZW compressLZW = new CompressLZW();
                 compressLZW.Decompress_File(new_File);
             }
+        }
+        public void Delete_Import(string path)
+        {
+            File.Delete(path);
         }
         public string Get_Compress(string type)
         {

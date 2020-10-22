@@ -39,6 +39,7 @@ namespace Consola_LZW
                                 new_Path = Path.GetFullPath(this_file.Name);
                             }
                             fileHandeling.Compress_LZW(new_Path, newName);
+                            System.IO.File.Delete(path);
                         }
                         Console.WriteLine("Archivo compreso exitosamente!");
                         break;
@@ -57,6 +58,7 @@ namespace Consola_LZW
                                 new_Path = Path.GetFullPath(this_file.Name);
                             }
                             fileHandeling.Decompress_LZW(new_Path);
+                            System.IO.File.Delete(path);
                         }
                         Console.WriteLine("Archivo descompreso exitosamente!");
                         break;

@@ -40,6 +40,7 @@ namespace API_Huffman.Controllers
                         new_Path = Path.GetFullPath(this_file.Name);
                     }
                     fileHandeling.Compress_Huffman(new_Path, name);
+                    fileHandeling.Delete_Import(path);
                     return Ok("El archivo ha sido comprimido exitosamente!");
                 }
                 return BadRequest("El archivo enviado no es de extensión .txt");
