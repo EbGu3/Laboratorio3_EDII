@@ -217,6 +217,7 @@ namespace Laboratorio_3_EDII.Manager
             var txt = Encoding.ASCII.GetString(data);
             return txt;
         }
+
         public Byte[] GetBytesFromBinaryString(string binary)
         {
             var list = new List<Byte>();

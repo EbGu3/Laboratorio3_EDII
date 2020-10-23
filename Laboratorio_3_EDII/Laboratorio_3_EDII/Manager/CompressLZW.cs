@@ -5,6 +5,8 @@ using Laboratorio_3_EDII.IService;
 using Laboratorio_3_EDII.Models;
 using EDII_PROYECTO.Huffman;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace Laboratorio_3_EDII.Manager
 {
@@ -261,46 +263,97 @@ namespace Laboratorio_3_EDII.Manager
             return targetPath;
         }
 
-        public void Compress_Text(string compress)
+        //TamañoDiccionario.TamañoFinalDiccionario
+        public string Compress_Text(string compress)
         {
+            var TableLengthBegin = 0;
+            var TableLengthFinal = 0;
+            var Texto_Comprimido = string.Empty;
+            List<string> CodeBinary = new List<string>();
+            List<int> Code = new List<int>();
             Dictionary<int, string> CodeTable = new Dictionary<int, string>();
             foreach (char Character in compress)
             {
-                if(!CodeTable.ContainsValue(Character.ToString()))
+                if (!CodeTable.ContainsValue(Character.ToString()))
                 {
                     CodeTable.Add(CodeTable.Count + 1, Character.ToString());
                 }
             }
+            TableLengthBegin = CodeTable.Count;
+            Texto_Comprimido = TableLengthBegin + ".";
 
             var CharacterFirst = compress[0].ToString();
-            var Text_Decimal = string.Empty;
+            var Text_Decimal = 0;
             for (int i = 1; i < compress.Length; i++)
             {
                 var Concatanation = CharacterFirst.ToString() + compress[i];
-                if(CodeTable.ContainsValue(Concatanation))
+                if (CodeTable.ContainsValue(Concatanation))
                 {
-                    if(i < compress.Length - 1 ) { CharacterFirst = Concatanation; }
-                    else { Text_Decimal += CodeTable.FirstOrDefault(x => x.Value == Concatanation).Key.ToString();}
+                    if (i < compress.Length - 1) { CharacterFirst = Concatanation; }
+                    else { Text_Decimal = CodeTable.FirstOrDefault(x => x.Value == Concatanation).Key; Code.Add(Text_Decimal); } 
                 }
                 else
                 {
-                    Text_Decimal += CodeTable.FirstOrDefault(x => x.Value == CharacterFirst).Key.ToString(); 
+                    Text_Decimal = CodeTable.FirstOrDefault(x => x.Value == CharacterFirst).Key;
+                    Code.Add(Text_Decimal);
                     CodeTable.Add(CodeTable.Count + 1, Concatanation);
                     CharacterFirst = compress[i].ToString();
                 }
             }
+            TableLengthFinal = CodeTable.Count;
+            Texto_Comprimido += TableLengthFinal + ".";
 
-            foreach (var item in CodeTable)
+
+            //addlongTableBegin.addlongTableFinal
+            for (int i = 1; i <= TableLengthBegin; i++)
             {
-                Console.WriteLine(item.Key + "  |  " + item.Value);
+                Texto_Comprimido += CodeTable.FirstOrDefault(x => x.Key == i).Value;
             }
 
-            Console.WriteLine($"El texto en decima es: {Text_Decimal} ");
+            var MaxLengthInBinary = Convert.ToString(TableLengthFinal,2);
+            foreach (var item in Code)
+            {
+                var CodeInBynary = Convert.ToString(item, 2);
+                if (CodeInBynary.Length == MaxLengthInBinary.Length) { CodeBinary.Add(CodeInBynary); }
+                else {  CodeInBynary = CodeInBynary.PadLeft(MaxLengthInBinary.Length, '0'); CodeBinary.Add(CodeInBynary); }
+            }
+
+            var TextBinary = string.Empty;
+            foreach (var item in CodeBinary)
+            {
+                TextBinary += item;
+            }
+
+            if(TextBinary.Length % 8 != 0)
+            {
+                while(TextBinary.Length % 8 != 0)
+                {
+                    TextBinary += "0";
+                }
+            }
+            var Data = GetBytesFromBinaryString(TextBinary);
+            var TextASCII = Encoding.ASCII.GetString(Data);
+            Texto_Comprimido += TextASCII;
+            return Texto_Comprimido;
 
         }
 
-        
-      
+        public Byte[] GetBytesFromBinaryString(string binary)
+        {
+            var list = new List<Byte>();
+
+            for (int i = 0; i < binary.Length; i += 8)
+            {
+                string t = binary.Substring(i, 8);
+
+                list.Add(Convert.ToByte(t, 2));
+            }
+
+            return list.ToArray();
+        }
+
+
+
 
     }
 }
