@@ -250,7 +250,6 @@ namespace Laboratorio_3_EDII.Manager
                 }
             }
         }
-        #region Otros
         string OtroArchivo(string fileName, string sourcePath, string targetPath)
         {
             string sourceFile = Path.Combine(sourcePath, fileName);
@@ -261,7 +260,47 @@ namespace Laboratorio_3_EDII.Manager
             File.Copy(sourceFile, destFile, true);
             return targetPath;
         }
-        #endregion //Métodos ajenos a compresiones, solo auxiliares
+
+        public void Compress_Text(string compress)
+        {
+            Dictionary<int, string> CodeTable = new Dictionary<int, string>();
+            foreach (char Character in compress)
+            {
+                if(!CodeTable.ContainsValue(Character.ToString()))
+                {
+                    CodeTable.Add(CodeTable.Count + 1, Character.ToString());
+                }
+            }
+
+            var CharacterFirst = compress[0].ToString();
+            var Text_Decimal = string.Empty;
+            for (int i = 1; i < compress.Length; i++)
+            {
+                var Concatanation = CharacterFirst.ToString() + compress[i];
+                if(CodeTable.ContainsValue(Concatanation))
+                {
+                    if(i < compress.Length - 1 ) { CharacterFirst = Concatanation; }
+                    else { Text_Decimal += CodeTable.FirstOrDefault(x => x.Value == Concatanation).Key.ToString();}
+                }
+                else
+                {
+                    Text_Decimal += CodeTable.FirstOrDefault(x => x.Value == CharacterFirst).Key.ToString(); 
+                    CodeTable.Add(CodeTable.Count + 1, Concatanation);
+                    CharacterFirst = compress[i].ToString();
+                }
+            }
+
+            foreach (var item in CodeTable)
+            {
+                Console.WriteLine(item.Key + "  |  " + item.Value);
+            }
+
+            Console.WriteLine($"El texto en decima es: {Text_Decimal} ");
+
+        }
+
+        
+      
 
     }
 }

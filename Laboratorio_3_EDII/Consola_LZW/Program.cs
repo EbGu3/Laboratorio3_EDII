@@ -1,6 +1,7 @@
 ﻿using Laboratorio_3_EDII.Models;
 using System;
 using System.IO;
+using Laboratorio_3_EDII.Manager;
 
 namespace Consola_LZW
 {
@@ -8,6 +9,20 @@ namespace Consola_LZW
     {
         static async System.Threading.Tasks.Task Main(string[] args)
         {
+
+            CompressLZW compressLZW = new CompressLZW();
+            compressLZW.Compress_Text("ABRACADABRA");
+            Console.ReadKey();
+
+
+
+
+
+
+
+
+
+
             while (true)
             {
                 Console.WriteLine("\t..::LZW::..");
