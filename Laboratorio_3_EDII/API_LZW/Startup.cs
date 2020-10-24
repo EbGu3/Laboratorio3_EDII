@@ -49,9 +49,7 @@ namespace API_LZW
 
             app.UseRouting();
 
-            app.UseSwagger(c => {
-                c.SerializeAsV2 = true;
-            });
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {

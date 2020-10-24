@@ -1,0 +1,12 @@
+cuento.txt
+C:\Users\kevin\source\repos\Laboratorio3_EDII\Laboratorio_3_EDII\API_LZW\Compress\Kevin.lzw
+1.7219251336898396
+0.5807453416149069
+0.4192546583850931
+LZW
+cuento.txt
+C:\Users\kevin\source\repos\Laboratorio3_EDII\Laboratorio_3_EDII\API_LZW\Compress\Kevin.lzw
+1.7219251336898396
+0.5807453416149069
+0.4192546583850931
+LZW

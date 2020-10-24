@@ -53,9 +53,7 @@ namespace API_Huffman
             }
 
 
-            app.UseSwagger(c => {
-                c.SerializeAsV2 = true;
-            });
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/EDv1/swagger.yaml", "Compresión Huffman - Estructura de Datos II");
