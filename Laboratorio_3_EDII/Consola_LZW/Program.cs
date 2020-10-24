@@ -15,8 +15,7 @@ namespace Consola_LZW
                 Console.WriteLine("\t..::LZW::..");
                 Console.WriteLine("Ingrese una opción:");
                 Console.WriteLine("  1)Compresión");
-                Console.WriteLine("  2)Descompresión");
-                Console.WriteLine("  3)Salir");
+                Console.WriteLine("  2)Salir");
                 var option = Console.ReadLine();
                 var RUTA = string.Empty;
                 var newName = string.Empty;
@@ -31,25 +30,6 @@ namespace Consola_LZW
                         Console.ReadKey();
                         break;
                     case "2":
-                        Console.WriteLine("Ingrese la ruta del archivo a descomprimir (extensión .lzw)");
-                        RUTA = Console.ReadLine();
-                        fileHandeling.Create_File_Export();
-                        using (var File = new FileStream(RUTA, FileMode.OpenOrCreate))
-                        {
-                            var ext = Path.GetExtension(File.Name);
-                            var new_Path = string.Empty;
-                            var path = Path.Combine($"Upload", newName + ext);
-                            using (var this_file = new FileStream(path, FileMode.Create))
-                            {
-                                await File.CopyToAsync(this_file);
-                                new_Path = Path.GetFullPath(this_file.Name);
-                            }
-                            fileHandeling.Decompress_LZW(new_Path);
-                            System.IO.File.Delete(path);
-                        }
-                        Console.WriteLine("Archivo descompreso exitosamente!");
-                        break;
-                    case "3":
                         Console.WriteLine("Saliendo...");
                         Environment.Exit(1);
                         break;
