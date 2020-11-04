@@ -1,122 +1,120 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Laboratorio_3_EDII.IService;
 using Laboratorio_3_EDII.Models;
 using EDII_PROYECTO.Huffman;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Text;
 
 namespace Laboratorio_3_EDII.Manager
 {
     public class CompressLZW 
     {
-        public void Decompress_File(FileStream ArchivoImportado)
+        public void Decompress_File(FileStream importFile)
         {
-            using (var Lectura = new BinaryReader(ArchivoImportado))
+            using (var reader = new BinaryReader(importFile))
             {
-                var CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
-                var CantidadCaracteresDiccionatrio = string.Empty;
-                while (CaracterDiccionario != '.')
+                var diccionaryCaracter = Convert.ToChar(reader.ReadByte());
+                var countDiccionary = string.Empty;
+                while (diccionaryCaracter != '.')
                 {
-                    CantidadCaracteresDiccionatrio += CaracterDiccionario;
-                    CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
+                    countDiccionary += diccionaryCaracter;
+                    diccionaryCaracter = Convert.ToChar(reader.ReadByte());
                 }
-                var CantidadTexto = string.Empty;
-                CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
-                while (CaracterDiccionario != '.')
+                var countText = string.Empty;
+                diccionaryCaracter = Convert.ToChar(reader.ReadByte());
+                while (diccionaryCaracter != '.')
                 {
-                    CantidadTexto += CaracterDiccionario;
-                    CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
+                    countText += diccionaryCaracter;
+                    diccionaryCaracter = Convert.ToChar(reader.ReadByte());
                 }
-                CaracterDiccionario = Convert.ToChar(Lectura.PeekChar());
-                var ByteEscrito = Lectura.ReadByte();
+                diccionaryCaracter = Convert.ToChar(reader.PeekChar());
+                var writeByte = reader.ReadByte();
                 var DiccionarioCar = new Dictionary<int, string>();
-                while (DiccionarioCar.Count != Convert.ToInt32(CantidadCaracteresDiccionatrio))
+                while (DiccionarioCar.Count != Convert.ToInt32(countDiccionary))
                 {
-                    if (!DiccionarioCar.ContainsValue(Convert.ToString(Convert.ToChar(ByteEscrito))))
+                    if (!DiccionarioCar.ContainsValue(Convert.ToString(Convert.ToChar(writeByte))))
                     {
-                        DiccionarioCar.Add(DiccionarioCar.Count + 1, Convert.ToString(Convert.ToChar(ByteEscrito)));
+                        DiccionarioCar.Add(DiccionarioCar.Count + 1, Convert.ToString(Convert.ToChar(writeByte)));
                     }
-                    ByteEscrito = Lectura.ReadByte();
+                    writeByte = reader.ReadByte();
                 }
-                Lectura.ReadByte();
-                Lectura.ReadByte();
-                CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
-                var TamanoBits = " ";
-                while (CaracterDiccionario != '.')
+                reader.ReadByte();
+                reader.ReadByte();
+                diccionaryCaracter = Convert.ToChar(reader.ReadByte());
+                var bitLenght = " ";
+                while (diccionaryCaracter != '.')
                 {
-                    TamanoBits += CaracterDiccionario;
-                    CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
+                    bitLenght += diccionaryCaracter;
+                    diccionaryCaracter = Convert.ToChar(reader.ReadByte());
                 }
-                CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
-                var Extension = Path.GetExtension(ArchivoImportado.Name);
-                while (CaracterDiccionario != '\u0002')
+                diccionaryCaracter = Convert.ToChar(reader.ReadByte());
+                var extension = Path.GetExtension(importFile.Name);
+                while (diccionaryCaracter != '\u0002')
                 {
-                    Extension += CaracterDiccionario;
-                    CaracterDiccionario = Convert.ToChar(Lectura.ReadByte());
+                    extension += diccionaryCaracter;
+                    diccionaryCaracter = Convert.ToChar(reader.ReadByte());
                 }
-                Extension = "." + Extension;
-                var ByteActual = string.Empty;
-                var ListaComprimidos = new List<int>();
-                Lectura.ReadByte();
-                Lectura.ReadByte();
-                while (Lectura.BaseStream.Position != Lectura.BaseStream.Length && ListaComprimidos.Count < Convert.ToInt32(CantidadTexto))
+                extension = "." + extension;
+                var byteNow = string.Empty;
+                var compressList = new List<int>();
+                reader.ReadByte();
+                reader.ReadByte();
+                while (reader.BaseStream.Position != reader.BaseStream.Length && compressList.Count < Convert.ToInt32(countText))
                 {
-                    var ByteLeido = Convert.ToString(Lectura.ReadByte(), 2);
-                    while (ByteLeido.Length < 8)
+                    var readedByte = Convert.ToString(reader.ReadByte(), 2);
+                    while (readedByte.Length < 8)
                     {
-                        ByteLeido = "0" + ByteLeido;
+                        readedByte = "0" + readedByte;
                     }
-                    ByteActual += ByteLeido;
-                    if (Convert.ToInt32(TamanoBits) > 8)
+                    byteNow += readedByte;
+                    if (Convert.ToInt32(bitLenght) > 8)
                     {
-                        if (ByteActual.Length >= Convert.ToInt32(TamanoBits))
+                        if (byteNow.Length >= Convert.ToInt32(bitLenght))
                         {
                             var thisComprimido = string.Empty;
-                            for (int i = 0; i < Convert.ToInt32(TamanoBits); i++)
+                            for (int i = 0; i < Convert.ToInt32(bitLenght); i++)
                             {
-                                thisComprimido += ByteActual[i];
+                                thisComprimido += byteNow[i];
                             }
-                            ListaComprimidos.Add(Convert.ToInt32(thisComprimido, 2));
-                            ByteActual = ByteActual.Substring(Convert.ToInt32(TamanoBits));
+                            compressList.Add(Convert.ToInt32(thisComprimido, 2));
+                            byteNow = byteNow.Substring(Convert.ToInt32(bitLenght));
                         }
                     }
                     else
                     {
-                        ListaComprimidos.Add(Convert.ToInt32(ByteActual, 2));
-                        ByteActual = string.Empty;
+                        compressList.Add(Convert.ToInt32(byteNow, 2));
+                        byteNow = string.Empty;
                     }
                 }
-                if (ByteActual.Length > 0)
+                if (byteNow.Length > 0)
                 {
-                    ListaComprimidos[ListaComprimidos.Count - 1] = ListaComprimidos[ListaComprimidos.Count - 1] + Convert.ToInt32(ByteActual, 2);
+                    compressList[compressList.Count - 1] = compressList[compressList.Count - 1] + Convert.ToInt32(byteNow, 2);
                 }
-                var PrimerCaracter = DiccionarioCar[ListaComprimidos[0]];
-                ListaComprimidos.RemoveAt(0);
-                var Decompressed = new System.Text.StringBuilder(PrimerCaracter);
-                ArchivoImportado.Close();
+                var first = DiccionarioCar[compressList[0]];
+                compressList.RemoveAt(0);
+                var Decompressed = new System.Text.StringBuilder(first);
+                importFile.Close();
                 FileHandeling fileHandeling = new FileHandeling();
-                var fileName = fileHandeling.Get_Name("LZW", ArchivoImportado.Name);
-                using (FileStream ArchivoNuevo = new FileStream($"Decompress/" + fileName, FileMode.OpenOrCreate))
+                var fileName = fileHandeling.Get_Name("LZW", importFile.Name);
+                using (FileStream newFile = new FileStream($"Decompress/" + fileName, FileMode.OpenOrCreate))
                 {
-                    using (StreamWriter writer = new StreamWriter(ArchivoNuevo))
+                    using (StreamWriter writer = new StreamWriter(newFile))
                     {
-                        foreach (var item in ListaComprimidos)
+                        foreach (var item in compressList)
                         {
-                            var analizarCadena = string.Empty;
+                            var analis = string.Empty;
                             if (DiccionarioCar.ContainsKey(item))
                             {
-                                analizarCadena = DiccionarioCar[item];
+                                analis = DiccionarioCar[item];
                             }
                             else if (item == DiccionarioCar.Count + 1)
                             {
-                                analizarCadena = PrimerCaracter + PrimerCaracter[0];
+                                analis = first + first[0];
                             }
-                            Decompressed.Append(analizarCadena);
-                            DiccionarioCar.Add(DiccionarioCar.Count + 1, PrimerCaracter + analizarCadena[0]);
-                            PrimerCaracter = analizarCadena;
+                            Decompressed.Append(analis);
+                            DiccionarioCar.Add(DiccionarioCar.Count + 1, first + analis[0]);
+                            first = analis;
                         }
                         writer.Write(Decompressed.ToString());
                     }

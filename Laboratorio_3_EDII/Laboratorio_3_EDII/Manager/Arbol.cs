@@ -19,7 +19,7 @@ namespace Laboratorio_3_EDII.Manager
         /// <returns></returns>
         public Node NodoPadre(Node derecho, Node izquierdo)
         {
-            Node Padre = new Node(0, derecho.letra_Probabilidad + izquierdo.letra_Probabilidad);
+            Node Padre = new Node(0, derecho.readerProb + izquierdo.readerProb);
             Padre.derecho = derecho;
             Padre.izquierdo = izquierdo;
             return Padre;
@@ -41,7 +41,7 @@ namespace Laboratorio_3_EDII.Manager
                 Node nuevoNodo = NodoPadre(LSecundaria[0], LSecundaria[1]);
                 LSecundaria.RemoveRange(0, 2);
                 LSecundaria.Add(nuevoNodo);
-                LPrincipal = LSecundaria.OrderBy(o => o.letra_Probabilidad).ToList();
+                LPrincipal = LSecundaria.OrderBy(o => o.readerProb).ToList();
             }
             return Raiz = NodoPadre(LPrincipal[0], LPrincipal[1]);
         }
@@ -66,7 +66,7 @@ namespace Laboratorio_3_EDII.Manager
             }
             if (Raiz.derecho == null && Raiz.izquierdo == null)
             {
-                CaracterCodigo nuevoCaracter = new CaracterCodigo(Raiz.letra, Raiz.etiqueta);
+                CaracterCodigo nuevoCaracter = new CaracterCodigo(Raiz.letter, Raiz.etiqueta);
                 ListaCodigos.Add(nuevoCaracter);
             }
         }
@@ -74,8 +74,8 @@ namespace Laboratorio_3_EDII.Manager
         public class Node
         {
             public string etiqueta = "";
-            public double letra_Probabilidad;
-            public byte letra;
+            public double readerProb;
+            public byte letter;
             public Node izquierdo;
             public Node derecho;
             public Node()
@@ -84,8 +84,8 @@ namespace Laboratorio_3_EDII.Manager
             }
             public Node(byte car, double prob)
             {
-                letra_Probabilidad = prob;
-                letra = car;
+                readerProb = prob;
+                letter = car;
             }
         }
         public class CaracterCodigo

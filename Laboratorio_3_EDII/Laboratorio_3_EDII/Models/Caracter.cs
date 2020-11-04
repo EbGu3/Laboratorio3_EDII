@@ -3,24 +3,24 @@ namespace Laboratorio_3_EDII.Models
 {
     public class Caracter : IComparable
     {
-        public byte CaracterTexto { get; set; }
-        public int Frecuencias { get; set; }
-        public int Indice { get; set; }
-        public string BinarioText { get; set; }
-        public bool CaracterYaRecorrido { get; set; }
-        public bool CaraterUsar { get; set; }
+        public byte textCaracter { get; set; }
+        public int frequency { get; set; }
+        public int index { get; set; }
+        public string textBin { get; set; }
+        public bool interactionCaracter { get; set; }
+        public bool caracterToUse { get; set; }
 
 
         public Caracter()
         {
-            CaracterYaRecorrido = false;
-            CaraterUsar = false;
+            interactionCaracter = false;
+            caracterToUse = false;
         }
 
         public int CompareTo(object obj)
         {
             var vComparador = (Caracter)obj;
-            return CaracterTexto.CompareTo(vComparador.CaracterTexto);
+            return textCaracter.CompareTo(vComparador.textCaracter);
         }
     }
 }

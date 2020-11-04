@@ -12,18 +12,18 @@ namespace Laboratorio_3_EDII.Manager
 {
     public class Huffman : IHuffman
     {
-        List<Node> Frecuencias = new List<Node>();
+        List<Node> frecuency = new List<Node>();
 
-        public int Leer(string Direccion)
+        public int Read(string direction)
         {
-            var NoCaracteres = 0;
+            var nonCarcater = 0;
             const int BufferLength = 80;
             var Buffer = new byte[BufferLength];
-            var File = Direccion;
+            var File = direction;
 
-            using (var Lectura = new FileStream(Direccion, FileMode.Open))
+            using (var file = new FileStream(direction, FileMode.Open))
             {
-                using (var Reader = new BinaryReader(Lectura))
+                using (var Reader = new BinaryReader(file))
                 {
                     while (Reader.BaseStream.Position != Reader.BaseStream.Length)
                     {
@@ -31,70 +31,70 @@ namespace Laboratorio_3_EDII.Manager
 
                         foreach (var item in Buffer)
                         {
-                            NoCaracteres++;
-                            ConteoDeFrecuncia(item);
+                            nonCarcater++;
+                            Frecuency_Count(item);
                         }
                     }
                     Reader.ReadBytes(BufferLength);
                 }
             }
-            return NoCaracteres;
+            return nonCarcater;
         }
 
         //Prueba
-        public int LeerCadena(string Cadena)
+        public int Read_Str(string Cadena)
         {
             var NoCaracter = 0;
             for (int i = 0; i < Cadena.Length; i++)
             {
                 NoCaracter++;
-                ConteoDeFrecuncia(Convert.ToByte(Cadena[i]));
+                Frecuency_Count(Convert.ToByte(Cadena[i]));
             }
             return NoCaracter;
         }
 
 
-        public void ConteoDeFrecuncia(byte Elemento)
+        public void Frecuency_Count(byte Elemento)
         {
-            int posicionLista;
-            if (Frecuencias.Exists(x => x.letra == Elemento))
+            int listPosition;
+            if (frecuency.Exists(x => x.letter == Elemento))
             {
-                posicionLista = Frecuencias.FindIndex(x => x.letra == Elemento);
+                listPosition = frecuency.FindIndex(x => x.letter == Elemento);
 
                 Node Prueba = new Node();
-                Prueba = Frecuencias.Find(x => x.letra == Elemento);
-                Frecuencias.RemoveAt(posicionLista);
-                Frecuencias.Add(new Node()
+                Prueba = frecuency.Find(x => x.letter == Elemento);
+                frecuency.RemoveAt(listPosition);
+                frecuency.Add(new Node()
                 {
-                    letra = Elemento,
-                    letra_Probabilidad = Prueba.letra_Probabilidad + 1
+                    letter = Elemento,
+                    readerProb = Prueba.readerProb + 1
                 });
             }
             else
             {
-                Frecuencias.Add(new Node()
+                frecuency.Add(new Node()
                 {
-                    letra = Elemento,
-                    letra_Probabilidad = 1
+                    letter = Elemento,
+                    readerProb = 1
                 });
             }
         }
-        public void CrearArbol()
+        public void Create_Tree()
         {
-            List<Node> FrecuenciaOrden = new List<Node>();
-            FrecuenciaOrden = Frecuencias.OrderBy(x => x.letra_Probabilidad).ToList();
+            List<Node> frecuencyOrder = new List<Node>();
+            frecuencyOrder = frecuency.OrderBy(x => x.readerProb).ToList();
 
-            Arbol ArbolH = new Arbol();
+            Arbol huffmanTree = new Arbol();
 
-            ArbolH.EtiquetarNodo(ArbolH.ConstruirNodo(FrecuenciaOrden));
-            Data.Instance.ListaCod = ArbolH.ListaCodigos;
+            huffmanTree.EtiquetarNodo(huffmanTree.ConstruirNodo(frecuencyOrder));
+            Data.Instance.codeList = huffmanTree.ListaCodigos;
         }
 
-        public byte[] CrearEncabezado(int noCaracteres)
+        public byte[] Create_Header(int noCaracteres)
         {
-            double noElementos = Data.Instance.ListaCod.LongCount();
+            double noElementos = Data.Instance.codeList.LongCount();
             string codigo = noCaracteres + "," + noElementos;
-            foreach (var cosa in Data.Instance.ListaCod)
+            foreach (var cosa in Data.Instance.codeList)
             {
                 string p = Convert.ToString(cosa.caracter, 2);
                 codigo = codigo + "," + p;
@@ -106,18 +106,18 @@ namespace Laboratorio_3_EDII.Manager
 
         public List<CaracterCodigo> CrearTree()
         {
-            List<Node> FrecuenciaOrden = new List<Node>();
-            FrecuenciaOrden = Frecuencias.OrderBy(x => x.letra_Probabilidad).ToList();
+            List<Node> frecuencyOrder = new List<Node>();
+            frecuencyOrder = frecuency.OrderBy(x => x.readerProb).ToList();
 
             Arbol ArbolH = new Arbol();
 
-            ArbolH.EtiquetarNodo(ArbolH.ConstruirNodo(FrecuenciaOrden));
+            ArbolH.EtiquetarNodo(ArbolH.ConstruirNodo(frecuencyOrder));
             return ArbolH.ListaCodigos;
         }
 
         public List<Node> ReturnFrecuencias()
         {
-            return Frecuencias;
+            return frecuency;
         }
     }
 }

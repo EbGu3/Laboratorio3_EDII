@@ -6,7 +6,7 @@ namespace Laboratorio_3_EDII.IService
 {
     public interface IHuffman
     {
-        public void CrearArbol();
+        public void Create_Tree();
 
     }
 }

@@ -26,9 +26,9 @@ namespace Laboratorio_3_EDII.Manager
             var full_path = $"Compress\\" + name + ".huff";
             fileToCompress.Close();
             var direccion = Path.GetFullPath(fileToCompress.Name);
-            int cantidadCaracteres = huffman.Leer(direccion);
-            huffman.CrearArbol();
-            byte[] encabezado = huffman.CrearEncabezado(cantidadCaracteres);
+            int cantidadCaracteres = huffman.Read(direccion);
+            huffman.Create_Tree();
+            byte[] encabezado = huffman.Create_Header(cantidadCaracteres);
             using (FileStream ArchivoComprimir = new FileStream(full_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 PropiedadesArchivoActual.NombreArchivoOriginal = Path.GetFileNameWithoutExtension(fileToCompress.Name);
@@ -50,8 +50,8 @@ namespace Laboratorio_3_EDII.Manager
                             foreach (var item in buffer)
                             {
                                 int posiList;
-                                posiList = Data.Instance.ListaCod.FindIndex(x => x.caracter == item);
-                                textoCifrado = textoCifrado + Data.Instance.ListaCod.ElementAt(posiList).codigo;
+                                posiList = Data.Instance.codeList.FindIndex(x => x.caracter == item);
+                                textoCifrado = textoCifrado + Data.Instance.codeList.ElementAt(posiList).codigo;
                                 if ((textoCifrado.Length / 8) > 0)
                                 {
                                     string escribirByte = textoCifrado.Substring(0, 8);
@@ -191,7 +191,7 @@ namespace Laboratorio_3_EDII.Manager
             string TextoCifrado = string.Empty;
             var CantidadCaracteres = 0;
             var Huffman = new Huffman();
-            CantidadCaracteres = Huffman.LeerCadena(Cadena);
+            CantidadCaracteres = Huffman.Read_Str(Cadena);
             var ListadoCodigos = Huffman.CrearTree();
           
             for (int i = 0; i < Cadena.Length; i++)

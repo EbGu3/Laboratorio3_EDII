@@ -1,7 +1,5 @@
-﻿using EDII_PROYECTO.Huffman;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using static Laboratorio_3_EDII.Manager.Arbol;
 
 namespace Laboratorio_3_EDII.Helper
@@ -18,7 +16,7 @@ namespace Laboratorio_3_EDII.Helper
             }
         }
         public int value;
-        public List<CaracterCodigo> ListaCod = new List<CaracterCodigo>();
+        public List<CaracterCodigo> codeList = new List<CaracterCodigo>();
         public Dictionary<string, byte> DicCarcacteres = new Dictionary<string, byte>();
         public int grade;
         public Delegate getNode;
